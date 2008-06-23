@@ -1,0 +1,166 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[latin2]{inputenc}
+\usepackage{graphicx}
+\usepackage{ulem}
+\begin{document}
+\section{Heading text}\label{section:_Ref186547407}This is a 
+\textit{$^{sentence}$}\textbf{\textit{ that}} \underline{
+contains} text \textbf{\textit{\underline{with}}} \sout{
+different} $_{formatting}$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10.52cm,height=8.41cm]{media/image1.eps}
+\caption{\label{figure:_Ref186544261}: Figure caption}
+\end{figure}
+
+
+
+Reference to the figure: \ref{figure:_Ref186544261}.
+
+\newcounter{numberedCntA}
+\begin{enumerate}
+\item First
+\item Second
+\item Third
+\begin{enumerate}
+\item First
+\item Second
+\item Third
+\end{enumerate}
+\item Fourth
+\setcounter{numberedCntA}{\theenumi}
+\end{enumerate}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+1 & 2 \\
+\hline
+3 & 4 \\
+\hline
+\end{tabular}
+\caption{\label{table:_Ref186545972}: caption}
+\end{table}
+
+Table Caption: \ref{table:_Ref186545972}.
+
+\subsection{This is a second heading}\label{section:_Ref186547508}
+árvíztûrõ tükörfúrógép
+
+ÁRVíZTÛRÕ TÜKÖRFÚRÓGÉP
+
+\underline{Underlined} 
+
+\textit{italic} 
+
+\textbf{fat} 
+
+\textit{\underline{underlineditalic}} 
+
+\textbf{\textit{italicfat}} 
+
+\textbf{\underline{underlinedfat}} 
+
+\textbf{\textit{\underline{underlineditalicfat}}}
+
+\newcounter{numberedCntB}
+\begin{enumerate}
+\item egy
+\item kettõ
+\item három
+\begin{enumerate}
+\item a
+\item b
+\item c
+\end{enumerate}
+\item négy
+\setcounter{numberedCntB}{\theenumi}
+\end{enumerate}
+
+
+-----------------------------------
+
+
+
+\begin{enumerate}
+\setcounter{enumi}{\thenumberedCntB}
+\item aaa
+\item bbb
+\item ccc
+\setcounter{numberedCntB}{\theenumi}
+\end{enumerate}
+
+
+\subsubsection{This is a third heading}\label{section:_Ref186547515}
+
+\begin{itemize}
+\item a
+\item b
+\begin{itemize}
+\item b1
+\begin{itemize}
+\item b1A
+\item b2A
+\end{itemize}
+\item b2
+\item b3
+\end{itemize}
+\item c
+\item d
+\end{itemize}
+
+
+
+
+\newcounter{numberedCntD}
+\begin{enumerate}
+\item AAA
+\item BBB
+\item CCC
+\setcounter{numberedCntD}{\theenumi}
+\end{enumerate}
+
+
+$<$$>$ as'q ...\# $\backslash$ \{ \} \\% \~ \_ \^{} \& \$ 
+"\,"
+
+\textsc{efg}
+
+\textsc{hijk}
+
+\sout{A }\xout{b }$^{cdef }$$_{defin}$
+
+
+
+Ez egy hosszú paragraph, amelyet balra igazítottunk. Még írok ide 
+cuccot, hogy látszódjon a dolog, legalább is word-ben.
+
+
+
+\begin{flushright}Ez egy hosszú paragraph, amelyet jobbra igazítottunk
+. Még írok ide, hogy látszódjon a dolog, legalább is word-ben.
+\end{flushright}
+
+
+
+\begin{center}Ez egy hosszú paragraph, amelyet centerre igazítottunk. 
+Még írok ide, hogy látszódjon a dolog, legalább is word-ben.
+\end{center}
+
+\begin{center}\end{center}
+
+
+
+Ez egy hosszú paragraph, amelyet justify igazítottunk. Még írok ide, 
+hogy látszódjon a dolog, legalább is word-ben. Írok még egy sort, 
+hogy teljesen korrektül látszódjon a formázás. Nézzük meg, hogy mi 
+történik latex-ben.
+
+Section: \ref{section:_Ref186547407}.
+
+SubSection: \ref{section:_Ref186547508}.
+
+SubSubSection:\ref{section:_Ref186547515}.
+
+\end{document}
