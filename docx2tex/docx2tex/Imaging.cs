@@ -98,7 +98,7 @@ namespace docx2tex
         {
             string epsImagePath = Path.ChangeExtension(newImagePath, "eps");
             string imageMagickPath = ConfigurationManager.AppSettings["ImageMagick"];
-            Process proc = Process.Start(imageMagickPath, string.Format("{0} {1}", orginalImagePath, epsImagePath));
+            Process proc = Process.Start(imageMagickPath, string.Format("\"{0}\" \"{1}\"", orginalImagePath, epsImagePath));
             proc.WaitForExit(10 * 1000);
         }
 
