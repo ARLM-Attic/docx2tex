@@ -22,8 +22,9 @@ publications to conferences easier where typography merits and only
 papers produced by TeX are accepted. Docx2tex is an open source and free 
 application that is accessible and extensible by everyone.
 
-\section{Introduction}There are two general methods to produce human 
-readable and printable digital documents:
+\section{Introduction}
+There are two general methods to produce human readable and printable 
+digital documents:
 
 \newcounter{numberedCntA}
 \begin{enumerate}
@@ -90,9 +91,9 @@ using standard technologies without leveraging the COM API of Word and
 without installing Word. We present the current features and some 
 further development directions.
 
-\section{The Technology}In this section we will enumerate and then 
-shortly review the technologies that are used in docx2tex and show how 
-they cooperate.
+\section{The Technology}
+In this section we will enumerate and then shortly review the 
+technologies that are used in docx2tex and show how they cooperate.
 
 The used technologies are the following:
 
@@ -127,11 +128,12 @@ diagram:
 
 
 
-\section{Features of Docx2tex}In this section we first present the 
-supported and then the unsupported features of docx2tex.
+\section{Features of Docx2tex}
+In this section we first present the supported and then the unsupported 
+features of docx2tex.
 
-\subsection{Supported Features}Docx2tex supports the following 
-features of Word 2007 and Tex:
+\subsection{Supported Features}
+Docx2tex supports the following features of Word 2007 and Tex:
 
 \newcounter{numberedCntD}
 \begin{enumerate}
@@ -147,7 +149,7 @@ features of Word 2007 and Tex:
 \item Cross reference to captions and headings
 \item Image conversion from various formats (incl. PNG and JPEG) to EPS
 \item Substitution of special characters (e.g. $\backslash$, \#, \{, \}, 
-$[$, $]$, \\%, \&, \~, ...)
+$[$, $]$, \%, \&, \~, ...)
 \setcounter{numberedCntD}{\theenumi}
 \end{enumerate}
 It supports normal and special text styles and also text alignments but 
@@ -165,18 +167,19 @@ EPS. The width and height properties are queried and the same
 properties are used in the resulting TeX documents. Some special TeX 
 characters are also resolved and escaped in the resulting TeX document.
 
-\subsection{Unsupported Features}We plan to add support for Word 2007 
-Equations and Drawings that can be converted to TeX mathematical 
-formulas and Fig respectively. Both of them is described in XML format 
-therefore our standard solution, XSL transformations can be used.
+\subsection{Unsupported Features}
+We plan to add support for Word 2007 Equations and Drawings that can be 
+converted to TeX mathematical formulas and Fig respectively. Both of 
+them is described in XML format therefore our standard solution, XSL 
+transformations can be used.
 
-\section{A Complex Example}In this section we will show a complex 
-example broken into parts that can show the most important features of 
-docx2tex.
+\section{A Complex Example}
+In this section we will show a complex example broken into parts that 
+can show the most important features of docx2tex.
 
-\subsection{The Structure of the OOXML Zip Package}First unzip the 
-contents of our OOXML Word 2007 document to a directory and get a 
-directory listing recursively:
+\subsection{The Structure of the OOXML Zip Package}
+First unzip the contents of our OOXML Word 2007 document to a directory 
+and get a directory listing recursively:
 
 \begin{verbatim}
 PS C:\Phd\conferences\2008_3_tex\example.docx> ls -Recu |% {$_.FullName.SubString(30)}
@@ -212,10 +215,10 @@ The styles.xml specify information about the styles used in the
 document. Under the media directory the embedded images can be found 
 (image1.jpeg in our example).
 
-\subsection{Structure of the Document}The text in document.xml is 
-grouped in paragraphs. Every segment of the document is a paragraph 
-(normal text, heading texts, images, etc.) except for some special 
-elements like tables.
+\subsection{Structure of the Document}
+The text in document.xml is grouped in paragraphs. Every segment of the 
+document is a paragraph (normal text, heading texts, images, etc.) 
+except for some special elements like tables.
 
 Consider the following example sentence: This is a \textit{$^{sentence
 }$}\textbf{\textit{ that}} \underline{contains} text \textbf{
@@ -459,7 +462,7 @@ four cells. The generated TeX output is the following:
 
 
 Consider the following set of special characters: $<$$>$ as'q ...\# 
-$\backslash$ \{ \} \\% \~ \_ \^{} \& \$ "\," \\
+$\backslash$ \{ \} \% \~ \_ \^{} \& \$ "\," \\
 These are described in OOXML in the following form:
 
 \begin{verbatim}
@@ -489,7 +492,7 @@ The resulting TeX code is:
 \$$<$\$\$$>$\$ 
 as'q ...$\backslash$\# 
 \$$\backslash$backslash\$ $\backslash$\{ 
-$\backslash$\} $\backslash$\\% $\backslash$\~ $\backslash$\_ 
+$\backslash$\} $\backslash$\% $\backslash$\~ $\backslash$\_ 
 $\backslash$\^{} $\backslash$\& \$ "$\backslash$,"
 
 

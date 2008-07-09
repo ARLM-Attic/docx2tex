@@ -138,6 +138,7 @@ namespace docx2tex
                 {
                     _tex.AddText(@"\label{section:" + GetString(paraNode, "./w:bookmarkStart/@w:name") + "}");
                 }
+                _tex.AddNL();
             }
             else if (paraStyle == _stylingFn.ResolveParaStyle("verbatim"))
             {

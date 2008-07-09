@@ -94,6 +94,7 @@ analysis, software maintenance, C++
 \section{\newpage
 \textbf{1 Introduction}}
 
+
 Regression testing is an important tool of software engineers to 
 successfully manage issues rising during the evolution of large software 
 systems. During the lifetime of large systems numerous modifications are 
@@ -173,7 +174,9 @@ approach as well as some possible research directions.
 
 \section{\textbf{2 Framework overview}}
 
+
 \subsection{2.1 The necessity of a concept change}
+
 
 As we have mentioned in the introductory section, traditional regression 
 testing approaches categorize test cases based on the outcome of the 
@@ -337,6 +340,7 @@ modification influences (either directly or indirectly) only a predicate
 
 \subsection{2.2 The changed concept}
 
+
 In order to overcome the above mentioned shortcomings, we have to 
 introduce a new regression testing concept and criterion. Our goal is 
 to test each modification in such a way that - if possible - after the 
@@ -373,6 +377,7 @@ from the original test case instead of just one test.
 
 
 \subsection{2.3 The test generator framework}
+
 
 We build our framework around the above set of criteria. We have had a 
 strong cooperation with an industrial partner, and the framework we 
@@ -502,6 +507,7 @@ rectangle).
 
 \section{\textbf{3 Related work, research directions}}
 
+
 In this section we present related work that motivated our research. 
 $[$19$]$ deals with the empirical comparison of test selection 
 techniques. Besides the commonly used but rather desperate random and 
@@ -528,6 +534,7 @@ on which new reliable regression test case generation can be based.
 
 \subsection{3.1 Graph-less dynamic slicing and impact analysis}
 
+
 In $[$16$]$ a new approach to producing dynamic program slices is 
 proposed. The main idea of the work is to employ dependence analysis 
 to dynamic slicing $[$1, 13, 14$]$ instead of applying traditional 
@@ -551,6 +558,7 @@ need only a set of variables, and not a slice of the entire program.
 
 \subsection{3.2 Mutation-based regression testing}
 
+
 Paper $[$17$]$ deals with regression test generation. The generation 
 process has two stages: in the first stage existing test cases are 
 categorized similarly to the previously mentioned (S0, S1, S2, S3) 
@@ -564,6 +572,7 @@ test pair should match the changed definition of reliability.
 
 
 \section{\textbf{4 Tools and notations}}
+
 
 
 
@@ -664,6 +673,7 @@ variables.
 
 
 \section{\textbf{5 Forward symptom analyzer algorithm}}
+
 
 In this section we present our forward dynamic impact analysis 
 algorithm. 
@@ -1097,6 +1107,7 @@ the same as the intra-procedural version) can be seen in 3.
 
 \section{\textbf{6 Finding influencing input variables}}
 
+
 In theory, we could either apply a backward or a forward algorithm to 
 find those input variables that have an influence on the statement that 
 causes ineffectiveness. However, since in the first step we developed 
@@ -1154,6 +1165,7 @@ of effective input variable sets of the predicates.Listing 3\textbf{
 \end{itemize}
 \end{itemize}
 \section{\textbf{7 Full example}}
+
 
 In order to present the usability of the proposed solution, we show the 
 two stages in work through a fully C++ compliant example in Listing 5.
@@ -1390,6 +1402,7 @@ evaluates to different values.
 
 \section{\textbf{8 Conclusion}}
 
+
 In this paper we introduced a changed concept of regression testing that 
 was motivated by the shortcomings of existing techniques. We have shown 
 that classical modification traversing and modification revealing 
@@ -1442,6 +1455,7 @@ has been completed.
 
 \section{\newpage
 \textbf{Bibliography}}
+
 
 $[$1$]$\ \ \ \ A. Beszedes, T. Gergely, Zs. M. Szabo, J. Csirik, T. 
 Gyimothy. Dynamic slicing method for maintenance of large C programs, 

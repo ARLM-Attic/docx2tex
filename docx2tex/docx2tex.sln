@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82C451F7-EC9E-4B1F-90A5-A2843571B46A}"
 	ProjectSection(SolutionItems) = preProject
 		docx2tex.vsmdi = docx2tex.vsmdi
+		docx2tex1.vsmdi = docx2tex1.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
@@ -23,6 +24,9 @@ Global
 		SccProjectUniqueName2 = docx2tex\\docx2tex.csproj
 		SccProjectName2 = docx2tex
 		SccLocalPath2 = docx2tex
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = docx2tex1.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
