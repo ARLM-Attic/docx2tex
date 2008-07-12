@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
+    <Content Include="Expected\testtug\media\image3.png" />
     <Content Include="Expected\test\media\image1.jpeg" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +56,9 @@
     <None Include="Expected\testtug\docx2tex.tex" />
     <None Include="Expected\testtug\media\image1.emf" />
     <None Include="Expected\testtug\media\image1.eps" />
+    <None Include="Expected\testtug\media\image2.emf" />
+    <None Include="Expected\testtug\media\image2.eps" />
+    <None Include="Expected\testtug\media\image3.eps" />
     <None Include="Expected\test\example.tex" />
     <None Include="Expected\test\media\image1.eps" />
     <None Include="Input\testcscs\regression-test-final2.docx" />
