@@ -24,7 +24,7 @@ namespace docx2tex
             }
 
             // process all runs
-            foreach (XmlNode run in GetNodes(paraNode, "./w:r|./w:smartTag|./w:hyperlink"))
+            foreach (XmlNode run in GetNodes(paraNode, "./w:r|./m:oMathPara|./m:oMath|./w:smartTag|./w:hyperlink"))
             {
                 // normal runs
                 if (run.Name == "w:r")
@@ -37,6 +37,18 @@ namespace docx2tex
                     {
                         ProcessSingleRun(inVerbatim, ref lastFieldCommand, stRun);
                     }
+                }
+                // math paragraph
+                else if (run.Name == "m:oMathPara")
+                {
+                    //math content
+                    ProcessMath(GetNode(run, "./m:oMath"));
+                    _tex.AddTextNL(@"\\");
+                }
+                // math content
+                else if (run.Name == "m:oMath")
+                {
+                    ProcessMath(run);
                 }
             }
             // apply style end for standard paragraphs

@@ -33,12 +33,15 @@ namespace docx2tex
             _nsmgr.AddNamespace("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
             _nsmgr.AddNamespace("pic", "http://schemas.openxmlformats.org/drawingml/2006/picture");
             _nsmgr.AddNamespace("r", "http://schemas.openxmlformats.org/officeDocument/2006/relationships");
+            _nsmgr.AddNamespace("m", "http://schemas.openxmlformats.org/officeDocument/2006/math");
             _nsmgr.AddNamespace("v", "urn:schemas-microsoft-com:vml");
         
             _numberingFn = numberingFn;
             _stylingFn = stylingFn;
             _imagingFn = imagingFn;
             _texingFn = texingFn;
+
+            InitMathTables();
         }
 
         /// <summary>
