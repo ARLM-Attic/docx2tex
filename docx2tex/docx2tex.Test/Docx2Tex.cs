@@ -79,6 +79,18 @@ namespace docx2tex.Test
             Do("testtug", "docx2tex");
         }
 
+        [TestMethod]
+        public void PreparedMACSTest()
+        {
+            Do("testmacs", "macs_secdistr_draft");
+        }
+
+        [TestMethod]
+        public void PreparedEquationsest()
+        {
+            Do("testeq", "eqtest");
+        }
+
         private void Do(string dir, string fileName)
         {
             string solutionDir = new DirectoryInfo(testContextInstance.TestDir).Parent.Parent.FullName;
@@ -98,6 +110,15 @@ namespace docx2tex.Test
             string inputFile = Path.Combine(inputDir, fileName + ".docx");
             string outputFile = Path.Combine(outputDir, fileName + ".tex");
             string expectedFile = Path.Combine(expectedDir, fileName + ".tex");
+
+            if (Directory.Exists(outputMediaDir))
+            {
+                Directory.Delete(outputMediaDir, true);
+            }
+            if (File.Exists(outputFile))
+            {
+                File.Delete(outputFile);
+            }
 
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = prog;

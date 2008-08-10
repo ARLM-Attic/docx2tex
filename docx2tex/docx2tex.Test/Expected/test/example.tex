@@ -2,6 +2,7 @@
 \usepackage[latin2]{inputenc}
 \usepackage{graphicx}
 \usepackage{ulem}
+\usepackage{amsmath}
 \begin{document}
 \section{Heading text}\label{section:_Ref186547407}
 This is a \textit{$^{sentence}$}\textbf{\textit{ that}} 
@@ -363,7 +364,7 @@ exponential function of phenospatial distances, $P_{z}=e^{-z}
 $, because survivorship mutations are usually considered to act 
 additively on the log scale (CHARLESWORTH 1994; HAMILTON 1966 - but see 
 BAUDISCH 2005). Thus, the distance of a phenotype from the optimum 
-defined its age-specific mortality exactly, $z=\mu _{x}=-ln(P
+defined its age-specific mortality exactly, $z=\mu _{x}=-\ln (P
 _{z})$. 
 
 We explored the case of four age classes ($X=4$) with three 
@@ -411,10 +412,10 @@ our definition of bins and the survival function, age-specific survival
 could range from a high of 99.75\% to a low of less than 0.00005\%. We 
 defined a vertical vector $s$ in which each element corresponds to the 
 survival of a phenotype, $s=e^{-z}$, where $z=\lbrace 
-\frac{1}{400},\frac{3}{400} ,, \frac{4001}{400}\rbrace $
-. The distributions of phenotypes currently under selection are 
-described by $p_{y,y,t}$. After selection, these distributions 
-were re-weighted by their phenotype-specific viability, 
+\frac{1}{400},\frac{3}{400} ,\cdots , \frac{4001}{400}
+\rbrace $. The distributions of phenotypes currently under selection 
+are described by $p_{y,y,t}$. After selection, these 
+distributions were re-weighted by their phenotype-specific viability, 
 
 \ \ \ \ $p_{y,y+1,t+1}=\frac{s\cdot p_{y,y,t}}{s
 ^{T}\cdot p_{y,y,t}}$\ \ \ \ (2).
@@ -456,13 +457,13 @@ this assumption, the magnitude $r$ was distributed as
 
 and the angle $\theta $ as
 
-\ \ \ \ $p(\theta ,n)=c^{'}sin^{n-2}\theta $,\ \ \ \ 
+\ \ \ \ $p(\theta ,n)=c^{'}\sin ^{n-2}\theta $,\ \ \ \ 
 (7),
 
 where
 
 \ \ \ \ $c^{'}=\frac{\Gamma (\frac{n}{2})}{\sqrt{\pi }
-\Gamma (\frac{1}{2}(n-1))}$\ \ \ \ (7a).
+\Gamma \lbrack \frac{1}{2}(n-1)\rbrack }$\ \ \ \ (7a).
 
 For some initial distance \textit{z}, mutational distance \textit{r
 }, and effective orientation \textit{?}, the distance of the changed 
@@ -474,7 +475,7 @@ phenotype from the optimum was
 We re-arranged Equation 8 to find the angle of mutational effect that 
 caused the distance to transition from distance $z$ to $z^{'}$,
 
-\ \ \ \ $\theta (z,r,z^{'})=cos^{-1}(\frac{z^{2}+r
+\ \ \ \ $\theta (z,r,z^{'})=\cos ^{-1}(\frac{z^{2}+r
 ^{2}-z^{'}^{2}}{2zr})$\ \ \ \ (9).
 
 We used Equations 6-9 to find the probability that a mutation at 
@@ -501,8 +502,8 @@ of mutations per time unit, the mutational probability transition matrix
 was
 
 \ \ \ \ $U^{}(n_{x},\lambda )=\sum_{n^{}=0}^{\infty 
-}{Pr(n^{})\times (U(n_{x},\lambda ))^{n^{}}}$\ 
-\ \ \ (11). 
+}{Pr(n^{})\times \lbrack U(n_{x},\lambda )\rbrack ^{n
+^{}}}$\ \ \ \ (11). 
 
 Each cohort contributed to each age-specific \textit{pdf} of 
 phenotypes in proportion to the product of its current fecundity and 
@@ -558,11 +559,11 @@ generations $T+50$ and $T$ to the effects of \textit{de novo }
 mutation accumulation. 
 
 $\pm \infty =\ne \sim \times \div !?<\ll >\gg \le \ge \mp \cong \approx 
-\equiv for allcomplement partialdiff\sqrt{\sqrt[3]{\sqrt[4]{
-a}}}unionints\emptyset \%degdegFdegC\Delta triangledown \exists 
-nexists \ni \ni \gets \uparrow \to \downarrow \leftrightarrow \pm \alpha 
-\beta \gamma \delta \epsilon E\theta \vartheta \mu \pi \rho \sigma \tau 
-\phi \omega \cdot $\\
+\equiv \forall \complement \partial \sqrt{\sqrt[3]{\sqrt[4]{
+a}}}\cup\cap\emptyset \%degdegFdegC\Delta \triangledown \exists 
+\nexists \ni \ni \gets \uparrow \to \downarrow \leftrightarrow \pm 
+\alpha \beta \gamma \delta \epsilon \varepsilon \theta \vartheta \mu \pi 
+\rho \sigma \tau \phi \omega \cdot \vdots \cdots \ddots $\\
 
 
 

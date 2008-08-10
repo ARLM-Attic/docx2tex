@@ -29,6 +29,14 @@ namespace docx2tex
             return node.InnerText;
         }
 
+        private string GetLowerString(XmlNode srcNode, string query)
+        {
+            string ret = GetString(srcNode, query);
+            if (ret == null)
+                return null;
+            return ret.ToLower();
+        }
+
         private int CountNodes(XmlNode srcNode, string query)
         {
             if (srcNode == null)

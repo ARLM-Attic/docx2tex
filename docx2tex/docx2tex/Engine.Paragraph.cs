@@ -109,7 +109,7 @@ namespace docx2tex
         /// <param name="isList"></param>
         private void ProcessParagraphContent(XmlNode paraNode, XmlNode prevNode, XmlNode nextNode, bool drawNewLine, bool inTable, bool isList)
         {
-            string paraStyle = GetString(paraNode, @"./w:pPr/w:pStyle/@w:val");
+            string paraStyle = GetLowerString(paraNode, @"./w:pPr/w:pStyle/@w:val");
 
             // if a heading found then process it
             if (paraStyle == _stylingFn.ResolveParaStyle("section") ||
@@ -117,18 +117,19 @@ namespace docx2tex
                 paraStyle == _stylingFn.ResolveParaStyle("subsubsection"))
             {
                 // put sections
-                switch (paraStyle)
+                if (paraStyle == _stylingFn.ResolveParaStyle("section"))
                 {
-                    case "Heading1":
-                        _tex.AddText(@"\section{");
-                        break;
-                    case "Heading2":
-                        _tex.AddText(@"\subsection{");
-                        break;
-                    case "Heading3":
-                        _tex.AddText(@"\subsubsection{");
-                        break;
+                    _tex.AddText(@"\section{");
                 }
+                else if (paraStyle == _stylingFn.ResolveParaStyle("subsection"))
+                {
+                    _tex.AddText(@"\subsection{");
+                }
+                else if (paraStyle == _stylingFn.ResolveParaStyle("subsubsection"))
+                {
+                    _tex.AddText(@"\subsubsection{");
+                }
+
                 // put text
                 ParagraphRuns(paraNode, false, false);
                 _tex.AddText("}");
@@ -144,8 +145,8 @@ namespace docx2tex
             {
                 // if verbatim node found
 
-                string prevParaStyle = GetString(prevNode, "./w:pPr/w:pStyle/@w:val");
-                string nextParaStyle = GetString(nextNode, "./w:pPr/w:pStyle/@w:val");
+                string prevParaStyle = GetLowerString(prevNode, "./w:pPr/w:pStyle/@w:val");
+                string nextParaStyle = GetLowerString(nextNode, "./w:pPr/w:pStyle/@w:val");
 
                 // the previous was also verbatim
                 bool wasVerbatim = prevParaStyle == _stylingFn.ResolveParaStyle("verbatim");

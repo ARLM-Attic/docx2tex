@@ -87,6 +87,7 @@ namespace docx2tex
             _tex.AddTextNL(@"\usepackage[latin2]{inputenc}");
             _tex.AddTextNL(@"\usepackage{graphicx}");
             _tex.AddTextNL(@"\usepackage{ulem}");
+            _tex.AddTextNL(@"\usepackage{amsmath}");
             _tex.AddTextNL(@"\begin{document}");
         }
 

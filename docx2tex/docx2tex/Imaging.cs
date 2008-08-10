@@ -98,8 +98,21 @@ namespace docx2tex
         {
             string epsImagePath = Path.ChangeExtension(newImagePath, "eps");
             string imageMagickPath = ConfigurationManager.AppSettings["ImageMagick"];
-            Process proc = Process.Start(imageMagickPath, string.Format("\"{0}\" \"{1}\"", orginalImagePath, epsImagePath));
-            proc.WaitForExit(10 * 1000);
+            
+            if(string.IsNullOrEmpty(imageMagickPath))
+            {
+                Console.WriteLine("ERROR: Unable to read configuration setting of ImageMagicK's path");
+                return;
+            }
+            try
+            {
+                Process proc = Process.Start(imageMagickPath, string.Format("\"{0}\" \"{1}\"", orginalImagePath, epsImagePath));
+                proc.WaitForExit(60 * 1000); // wait one minute
+            }
+            catch
+            {
+                Console.WriteLine("ERROR: Unable to start ImageMagicK");
+            }
         }
 
         #endregion

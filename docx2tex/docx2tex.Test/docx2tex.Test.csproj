@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
+    <Content Include="Expected\testmacs\media\image4.png" />
     <Content Include="Expected\testtug\media\image3.png" />
     <Content Include="Expected\test\media\image1.jpeg" />
   </ItemGroup>
@@ -53,6 +54,15 @@
     <None Include="Expected\testcscs\media\image2.eps" />
     <None Include="Expected\testcscs\media\image2.wmf" />
     <None Include="Expected\testcscs\regression-test-final2.tex" />
+    <None Include="Expected\testeq\eqtest.tex" />
+    <None Include="Expected\testmacs\macs_secdistr_draft.tex" />
+    <None Include="Expected\testmacs\media\image1.emf" />
+    <None Include="Expected\testmacs\media\image1.eps" />
+    <None Include="Expected\testmacs\media\image2.emf" />
+    <None Include="Expected\testmacs\media\image2.eps" />
+    <None Include="Expected\testmacs\media\image3.emf" />
+    <None Include="Expected\testmacs\media\image3.eps" />
+    <None Include="Expected\testmacs\media\image4.eps" />
     <None Include="Expected\testtug\docx2tex.tex" />
     <None Include="Expected\testtug\media\image1.emf" />
     <None Include="Expected\testtug\media\image1.eps" />
@@ -62,6 +72,9 @@
     <None Include="Expected\test\example.tex" />
     <None Include="Expected\test\media\image1.eps" />
     <None Include="Input\testcscs\regression-test-final2.docx" />
+    <None Include="Input\testeq\eqtest.docx" />
+    <None Include="Input\testmacs\MACS_SecDistr_draft.docx" />
+    <None Include="Input\testmacs\MACS_SecDistr_draft.paraStylePairs" />
     <None Include="Input\testtug\docx2tex.docx" />
     <None Include="Input\test\example.docx" />
     <None Include="Output\testcscs\l.ps1" />
@@ -70,6 +83,11 @@
     <None Include="Output\testtug\p.ps1" />
     <None Include="Output\test\l.ps1" />
     <None Include="Output\test\p.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expected\testeq\media\" />
+    <Folder Include="Output\testeq\" />
+    <Folder Include="Output\testmacs\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

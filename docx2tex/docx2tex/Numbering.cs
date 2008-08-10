@@ -18,13 +18,18 @@ namespace docx2tex
         public Numbering(ZipPackagePart numberingPart)
         {
             _numberingPart = numberingPart;
-            Stream numberingStream = _numberingPart.GetStream();
 
-            NameTable nt = new NameTable();
-            _xmlnsMgr = new XmlNamespaceManager(nt);
-            _xmlnsMgr.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
-            _numberingDoc = new XmlDocument(nt);
-            _numberingDoc.Load(numberingStream);
+            // if exist then load it
+            if (numberingPart != null)
+            {
+                Stream numberingStream = _numberingPart.GetStream();
+
+                NameTable nt = new NameTable();
+                _xmlnsMgr = new XmlNamespaceManager(nt);
+                _xmlnsMgr.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+                _numberingDoc = new XmlDocument(nt);
+                _numberingDoc.Load(numberingStream);
+            }
 
             _listStyle = new List<ListInfo>();
             _visitedFirstLevelNumberings = new Dictionary<uint, string>();

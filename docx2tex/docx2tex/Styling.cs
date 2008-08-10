@@ -30,7 +30,7 @@ namespace docx2tex
 
         public string ResolveParaStyle(string styleName)
         {
-            if (_paraStylePairs.ContainsKey(styleName))
+            if (_paraStylePairs.ContainsKey(styleName.ToLower()))
             {
                 return _paraStylePairs[styleName];
             }
@@ -39,7 +39,7 @@ namespace docx2tex
 
         public string ResolveRunStyle(string styleName)
         {
-            if (_runStylePairs.ContainsKey(styleName))
+            if (_runStylePairs.ContainsKey(styleName.ToLower()))
             {
                 return _runStylePairs[styleName];
             }
@@ -53,10 +53,10 @@ namespace docx2tex
         private void InitStylePairs()
         {
             _paraStylePairs = new Dictionary<string, string>();
-            _paraStylePairs.Add("section", "Heading1");
-            _paraStylePairs.Add("subsection", "Heading2");
-            _paraStylePairs.Add("subsubsection", "Heading3");
-            _paraStylePairs.Add("verbatim", "Verbatim");
+            _paraStylePairs.Add("section", "heading1");
+            _paraStylePairs.Add("subsection", "heading2");
+            _paraStylePairs.Add("subsubsection", "heading3");
+            _paraStylePairs.Add("verbatim", "verbatim");
 
             string paraStylePairFile = Path.ChangeExtension(_inputDocxPath, "paraStylePairs");
             if (File.Exists(paraStylePairFile))
@@ -65,10 +65,10 @@ namespace docx2tex
             }
 
             _runStylePairs = new Dictionary<string, string>();
-            _runStylePairs.Add("section", "Heading1");
-            _runStylePairs.Add("subsection", "Heading2");
-            _runStylePairs.Add("subsubsection", "Heading3");
-            _runStylePairs.Add("verbatim", "Verbatim");
+            _runStylePairs.Add("section", "heading1");
+            _runStylePairs.Add("subsection", "heading2");
+            _runStylePairs.Add("subsubsection", "heading3");
+            _runStylePairs.Add("verbatim", "verbatim");
 
             string runStylePairFile = Path.ChangeExtension(_inputDocxPath, "runStylePairs");
             if (File.Exists(runStylePairFile))
@@ -88,8 +88,8 @@ namespace docx2tex
                     Match match = stylePairRegex.Match(line);
                     if (match != null)
                     {
-                        string latex = match.Groups["Latex"].Value;
-                        string custom = match.Groups["Custom"].Value;
+                        string latex = match.Groups["Latex"].Value.ToLower();
+                        string custom = match.Groups["Custom"].Value.ToLower();
                         stylePairs[latex] = custom;
                     }
                 }

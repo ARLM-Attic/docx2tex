@@ -36,7 +36,13 @@ namespace docx2tex
             using (Package pkg = Package.Open(inputDocxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 ZipPackagePart documentPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/document.xml", UriKind.Relative));
-                ZipPackagePart numberingPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/numbering.xml", UriKind.Relative));
+                
+                //numbering part may not exist for simple documents
+                ZipPackagePart numberingPart = null;
+                if (pkg.PartExists(new Uri("/word/numbering.xml", UriKind.Relative)))
+                {
+                    numberingPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/numbering.xml", UriKind.Relative));
+                }
 
                 Numbering numbering = new Numbering(numberingPart);
                 Styling styling = new Styling(inputDocxPath);

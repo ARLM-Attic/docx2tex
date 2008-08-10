@@ -19,7 +19,7 @@ namespace docx2tex
             if (bookmarkRefNode == null)
                 return;
 
-            string refStyle = GetString(bookmarkRefNode, "./preceding-sibling::*[1]/w:pStyle/@w:val");
+            string refStyle = GetLowerString(bookmarkRefNode, "./preceding-sibling::*[1]/w:pStyle/@w:val");
 
             string seq = GetString(bookmarkRefNode.ParentNode, "./w:fldSimple[starts-with(@w:instr, ' SEQ ')]/@w:instr");
 
