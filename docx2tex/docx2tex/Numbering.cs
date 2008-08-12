@@ -221,10 +221,16 @@ namespace docx2tex
         {
             if (numbering.HasValue && level.HasValue)
             {
-
-                XmlNode node = _numberingDoc.DocumentElement.SelectSingleNode(
+                XmlNode node = null;
+                node = _numberingDoc.DocumentElement.SelectSingleNode(
                         string.Format("/w:numbering/w:num[@w:numId='{0}']/w:abstractNumId",
                             numbering), _xmlnsMgr);
+
+                // there are some cases when w:numId is bad in document.xml and references to an unknown numId in numbering.xml
+                if (node == null)
+                {
+                    return ListTypeEnum.None;
+                }
 
                 int abstractNumbering = int.Parse(node.Attributes["w:val"].Value);
 

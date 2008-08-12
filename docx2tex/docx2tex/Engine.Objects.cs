@@ -15,21 +15,24 @@ namespace docx2tex
         {
             XmlNode blipNode = GetNode(xmlNode, @"./wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip");
 
-            // put as figure
-            _tex.AddTextNL(@"\begin{figure}[h]");
-            _tex.AddTextNL(@"\centering");
+            if (blipNode != null)
+            {
+                // put as figure
+                _tex.AddTextNL(@"\begin{figure}[h]");
+                _tex.AddTextNL(@"\centering");
 
-            // apply width and height
-            XmlNode extentNode = GetNode(blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode, "./wp:extent");
-            string widthHeightStr = _imagingFn.GetWidthAndHeightFromStyle(GetInt(extentNode, "@cx"), GetInt(extentNode, "@cy"));
-            _tex.AddText(@"\includegraphics[" + widthHeightStr + "]{");
-            // convert and resolve new image path
-            _tex.AddTextNL(_imagingFn.ResolveImage(GetString(blipNode, "@r:embed")) + "}");
+                // apply width and height
+                XmlNode extentNode = GetNode(blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode, "./wp:extent");
+                string widthHeightStr = _imagingFn.GetWidthAndHeightFromStyle(GetInt(extentNode, "@cx"), GetInt(extentNode, "@cy"));
+                _tex.AddText(@"\includegraphics[" + widthHeightStr + "]{");
+                // convert and resolve new image path
+                _tex.AddTextNL(_imagingFn.ResolveImage(GetString(blipNode, "@r:embed")) + "}");
 
-            XmlNode captionP = blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.NextSibling;
-            // add caption
-            ImageCaption(captionP);
-            _tex.AddTextNL(@"\end{figure}");
+                XmlNode captionP = blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.NextSibling;
+                // add caption
+                ImageCaption(captionP);
+                _tex.AddTextNL(@"\end{figure}");
+            }
         }
 
         /// <summary>

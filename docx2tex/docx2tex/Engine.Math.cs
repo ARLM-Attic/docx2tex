@@ -161,19 +161,23 @@ namespace docx2tex
                                 case "ln": data = @"\ln "; break;
                                 default:
                                     {
-                                        //standard text
-                                        foreach (var c in str)
+                                        // sometimes the text is missing, should check
+                                        if (str != null)
                                         {
-                                            string cs = c.ToString();
-                                            // special characters
-                                            if (mathTable.ContainsKey(cs))
+                                            //standard text
+                                            foreach (var c in str)
                                             {
-                                                data += mathTable[cs];
-                                            }
-                                            else
-                                            {
-                                                // normal characters
-                                                data += cs;
+                                                string cs = c.ToString();
+                                                // special characters
+                                                if (mathTable.ContainsKey(cs))
+                                                {
+                                                    data += mathTable[cs];
+                                                }
+                                                else
+                                                {
+                                                    // normal characters
+                                                    data += cs;
+                                                }
                                             }
                                         }
                                     }
