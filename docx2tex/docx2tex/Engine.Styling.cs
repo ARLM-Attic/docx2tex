@@ -76,7 +76,17 @@ namespace docx2tex
                 }
             }
 
+            // ensure that the styles are closed in the reverse order as they are inserted
+            // this is important when different style have different ending characters or
+            // when the styles are paired
+            List<XmlNode> endNodes = new List<XmlNode>();
             foreach (XmlNode sty in GetNodes(xmlNode, "./*"))
+            {
+                endNodes.Add(sty);
+            }
+            endNodes.Reverse();
+
+            foreach (XmlNode sty in endNodes)
             {
                 switch (sty.Name)
                 {
@@ -120,11 +130,13 @@ namespace docx2tex
                     string align = GetString(chld, "@w:val");
                     if (align == "right")
                     {
-                        _tex.AddText(@"\begin{flushright}");
+                        _tex.AddStartStyle(StyleEnum.ParaFlushRight);
+//                        _tex.AddText(@"\begin{flushright}");
                     }
                     else if (align == "center")
                     {
-                        _tex.AddText(@"\begin{center}");
+                        _tex.AddStartStyle(StyleEnum.ParaCenter);
+//                      _tex.AddText(@"\begin{center}");
                     }
                 }
             }
@@ -138,18 +150,28 @@ namespace docx2tex
         {
             if (xmlNode == null)
                 return;
-            foreach (XmlNode chld in GetNodes(xmlNode, "./*"))
+
+            List<XmlNode> endNodes = new List<XmlNode>();
+            foreach (XmlNode sty in GetNodes(xmlNode, "./*"))
+            {
+                endNodes.Add(sty);
+            }
+            endNodes.Reverse();
+
+            foreach (XmlNode chld in endNodes)
             {
                 if (chld.Name == "w:jc")
                 {
                     string align = GetString(chld, "@w:val");
                     if (align == "right")
                     {
-                        _tex.AddText(@"\end{flushright}");
+                        _tex.AddEndStyle(StyleEnum.ParaFlushRight);
+//                    _tex.AddText(@"\end{flushright}");
                     }
                     else if (align == "center")
                     {
-                        _tex.AddText(@"\end{center}");
+                        _tex.AddEndStyle(StyleEnum.ParaCenter);
+//                    _tex.AddText(@"\end{center}");
                     }
                 }
             }

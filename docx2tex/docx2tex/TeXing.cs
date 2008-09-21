@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using docx2tex.Data;
 
 namespace docx2tex
 {
@@ -27,28 +28,18 @@ namespace docx2tex
         private static void InitReplacesPairs()
         {
             _replacerPairs = new Dictionary<string, string>();
-            _replacerPairs.Add("’", "'");
-            _replacerPairs.Add("‘", "'");
-            _replacerPairs.Add("…", "...");
-            _replacerPairs.Add("$", "!!!DOLLARSIGN!!!");
-            _replacerPairs.Add("\\", "$\\backslash$");
-            _replacerPairs.Add("#", "\\#");
-            _replacerPairs.Add("{", "\\{");
-            _replacerPairs.Add("}", "\\}");
-            _replacerPairs.Add("[", "$[$");
-            _replacerPairs.Add("]", "$]$");
-            _replacerPairs.Add("%", "\\%");
-            _replacerPairs.Add("&", "\\&");
-            _replacerPairs.Add("~", "\\~");
-            _replacerPairs.Add("_", "\\_");
-            _replacerPairs.Add("^", "\\^{}");
-            _replacerPairs.Add("–", "-");
-            _replacerPairs.Add("—", "-");
-            _replacerPairs.Add("“", "\"\\,");
-            _replacerPairs.Add("„", "\"\\,");
-            _replacerPairs.Add("”", "\"");
-            _replacerPairs.Add("<", "$<$");
-            _replacerPairs.Add(">", "$>$");
+
+            foreach (var ent in CodeTable.Instance.NonMathTable)
+            {
+                if ((ent.Value.MathMode & MathMode.No) == MathMode.No)
+                {
+                    _replacerPairs.Add(ent.Key, ent.Value.TeX);
+                }
+                if ((ent.Value.MathMode & MathMode.Switch) == MathMode.Switch)
+                {
+                    _replacerPairs.Add(ent.Key, string.Format("${0}$", ent.Value.TeX));
+                }
+            }
         }                      
         #endregion
 
@@ -82,6 +73,11 @@ namespace docx2tex
             return replaced;
         }
 
+        /// <summary>
+        /// TODO: put to codetable
+        /// </summary>
+        /// <param name="original"></param>
+        /// <returns></returns>
         public string VerbatimizeText(string original)
         {
             string newText = original.Replace("’", "'").Replace("“", "\"").Replace("”", "\"");

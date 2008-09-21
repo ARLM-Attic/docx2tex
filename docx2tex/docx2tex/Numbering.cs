@@ -178,7 +178,13 @@ namespace docx2tex
             if (num == 0)
                 return string.Empty;
 
-            return UniqueString(num / 26) + Convert.ToChar(num+64);
+            string val = (num - 1).ToString();
+            string ret = string.Empty;
+            foreach (char c in val)
+            {
+                ret += Convert.ToChar(Convert.ToInt32(c) + Convert.ToInt32('A') - Convert.ToInt32('0'));
+            }
+            return ret;
         }
 
         private List<ListControl> GetReverseListTilIndex(int index)

@@ -2,117 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using docx2tex.Data;
 
 namespace docx2tex
 {
     partial class Engine
     {
-        Dictionary<string, string> mathTable = new Dictionary<string, string>();
+        Dictionary<string, string> _mathTable;
 
         private void InitMathTables()
         {
-            mathTable.Add("±", @"\pm ");
-            mathTable.Add("∞", @"\infty ");
-            mathTable.Add("=", "=");
-            mathTable.Add("≠", @"\ne ");
-            mathTable.Add("~", @"\sim ");
-            mathTable.Add("×", @"\times ");
-            mathTable.Add("÷", @"\div ");
-            mathTable.Add("!", "!");
-            mathTable.Add("<", "<");
-            mathTable.Add("≪", @"\ll ");
-            mathTable.Add(">", ">");
-            mathTable.Add("≫", @"\gg ");
-            mathTable.Add("≤", @"\le ");
-            mathTable.Add("≥", @"\ge ");
-            mathTable.Add("∓", @"\mp ");
-            mathTable.Add("≅", @"\cong ");
-            mathTable.Add("≈", @"\approx ");
-            mathTable.Add("≡", @"\equiv ");
-            mathTable.Add("∀", @"\forall ");
-            mathTable.Add("∁", @"\complement "); //amssymb
-            mathTable.Add("∂", @"\partial ");
-            mathTable.Add("∪", @"\cup");
-            mathTable.Add("∩", @"\cap");
-            mathTable.Add("∅", @"\emptyset ");
-            mathTable.Add("%", @"\%");
-            mathTable.Add("°", "deg"); //TODO
-            mathTable.Add("℉", "degF"); //TODO
-            mathTable.Add("℃", "degC"); //TODO
-            //mathTable.Add("∆", @"\vartriangle "); //Delta!!! OK
-            mathTable.Add("∇", @"\triangledown "); //amssymb
-            mathTable.Add("∃", @"\exists ");
-            mathTable.Add("∄", @"\nexists ");  //amssymb
-            mathTable.Add("∋", @"\ni ");
-            mathTable.Add("←", @"\gets ");
-            mathTable.Add("↑", @"\uparrow ");
-            mathTable.Add("→", @"\to ");
-            mathTable.Add("↓", @"\downarrow ");
-            mathTable.Add("↔", @"\leftrightarrow ");
-            mathTable.Add("≝", @"="); //TODO
-            mathTable.Add("≞", @"="); //TODO
-            mathTable.Add("≜", @"="); //TODO
-            
-            mathTable.Add("⊕", @"\oplus ");
+            _mathTable = new Dictionary<string, string>();
+            foreach (var ent in CodeTable.Instance.MathOnlyTable)
+            {
+                _mathTable.Add(ent.Key, ent.Value.TeX);
+            }
 
-            mathTable.Add("…", @"\ldots ");
-            mathTable.Add("∴", "");
-            mathTable.Add("*", "");
-            mathTable.Add("∙", @"\cdot ");
-            mathTable.Add("⋮", @"\vdots ");
-            mathTable.Add("⋯", @"\cdots ");
-            mathTable.Add("⋰", "");
-            mathTable.Add("⋱", @"\ddots ");
-            mathTable.Add("ℵ", "");
-            mathTable.Add("ℶ", "");
-            mathTable.Add("∎", "");
-
-            mathTable.Add("α", @"\alpha ");
-            mathTable.Add("β", @"\beta ");
-            mathTable.Add("γ", @"\gamma ");
-            mathTable.Add("δ", @"\delta ");
-            mathTable.Add("ε", @"\epsilon ");
-            mathTable.Add("ϵ", @"\varepsilon ");
-            mathTable.Add("ζ", @"\zeta ");
-            mathTable.Add("η", @"\eta ");
-            mathTable.Add("θ", @"\theta ");
-            mathTable.Add("ϑ", @"\vartheta ");
-            mathTable.Add("ι", @"\iota ");
-            mathTable.Add("κ", @"\kappa ");
-            mathTable.Add("λ", @"\lambda ");
-            mathTable.Add("μ", @"\mu ");
-            mathTable.Add("ν", @"\nu ");
-            mathTable.Add("ξ", @"\xi ");
-            mathTable.Add("ο", @"\o ");
-            mathTable.Add("π", @"\pi ");
-            //mathTable.Add("", @"\varpi "); //
-            mathTable.Add("ρ", @"\rho ");
-            //mathTable.Add("", @"\varrho "); //
-            mathTable.Add("σ", @"\sigma ");
-            //mathTable.Add("", @"\varsigma "); //
-            mathTable.Add("τ", @"\tau ");
-            mathTable.Add("υ", @"\upsilon ");
-            mathTable.Add("φ", @"\phi ");
-            //mathTable.Add("", @"\varphi "); //
-            mathTable.Add("χ", @"\chi ");
-            mathTable.Add("ψ", @"\psi ");
-            mathTable.Add("ω", @"\omega ");
-
-            mathTable.Add("Γ", @"\Gamma ");
-            mathTable.Add("∆", @"\Delta ");
-            mathTable.Add("Δ", @"\Delta ");
-            mathTable.Add("Θ", @"\Theta ");
-            mathTable.Add("Λ", @"\Lambda ");
-            mathTable.Add("Ξ", @"\Xi ");
-            mathTable.Add("Π", @"\Pi ");
-            mathTable.Add("Σ", @"\Sigma ");
-            mathTable.Add("Υ", @"\Upsilon ");
-            mathTable.Add("Φ", @"\Phi ");
-            mathTable.Add("Ψ", @"\Psi ");
-            mathTable.Add("Ω", @"\Omega ");
-            
-
-            mathTable.Add("&", ""); // no alignment
+            _mathTable.Add("&", ""); // no alignment
         }
 
         private void ProcessMath(XmlNode mathNode)
@@ -169,9 +75,9 @@ namespace docx2tex
                                             {
                                                 string cs = c.ToString();
                                                 // special characters
-                                                if (mathTable.ContainsKey(cs))
+                                                if (_mathTable.ContainsKey(cs))
                                                 {
-                                                    data += mathTable[cs];
+                                                    data += _mathTable[cs];
                                                 }
                                                 else
                                                 {

@@ -156,15 +156,15 @@ state automaton can be described as a UML activity diagram $[$19$]$.
 The activity diagram can be seen in . In , the simplified class diagram 
 of the ping-pong game can be seen.
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=253.05pt,height=141.3pt]{media/image1.eps}
 \end{figure}
- \end{center}
+ 
 
-\begin{center}\end{center}
 
-\begin{center}\textbf{Fig. . }Class diagram of ping-pong game
+
+\begin{center}\textbf{Fig. 1. }Class diagram of ping-pong game
 \end{center}
 
 The game manager is a singleton, there is exactly one instance of the 
@@ -177,13 +177,13 @@ A possible object diagram can be seen in .
 
 
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=213.3pt,height=190.2pt]{media/image2.eps}
 \end{figure}
-\end{center}
 
-\begin{center}\textbf{Fig. . } Possible object diagram of a 
+
+\begin{center}\textbf{Fig. 2. } Possible object diagram of a 
 distributed game\end{center}
 
 
@@ -274,13 +274,13 @@ validability point of view.
 We identified the need to give a semi-formalized description of our 
 solution. There are two approaches:
 
-\newcounter{numberedCntN}
+\newcounter{numberedCntBD}
 \begin{enumerate}
 \item Extend some existing description language like BPEL $[$20, 11
 $]$
 \item Create a new language that only focuses on the problem presented 
 in this article
-\setcounter{numberedCntN}{\theenumi}
+\setcounter{numberedCntBD}{\theenumi}
 \end{enumerate}
 Because BPEL focuses on the business process rather than security, and 
 uses XML notation, we have chosen the second approach. BPEL and our 
@@ -411,14 +411,14 @@ ball.
 
 
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=193.45pt,height=146.15pt]{media/image3.eps}
 \end{figure}
-\end{center}
 
-\begin{center}\textbf{Fig. . }State Machine of the ping-pong game
-\end{center}
+
+\begin{center}\textbf{Fig. 3. }State Machine of the ping-pong g
+ame\end{center}
 
 
 
@@ -452,7 +452,7 @@ $FSM=(\Sigma ,S,s_{0},\delta ,F)$\\
 
 Where 
 
-\newcounter{numberedCntK}
+\newcounter{numberedCntBA}
 \begin{enumerate}
 \item $\Sigma $ represents the input alphabet, in our case the set of 
 state transitions
@@ -461,7 +461,7 @@ state transitions
 \item $\delta : S\times \Sigma \to S$ is the state transition function 
 
 \item F is the set of finite states, non-empty set in our case
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 
 
@@ -542,13 +542,13 @@ Let H the information-set provided and available at a method call:
 
 Where
 
-\newcounter{numberedCntL}
+\newcounter{numberedCntBB}
 \begin{enumerate}
 \item $T_{H}$ is the type of the caller
 \item $S_{a}$ the actual state (business process state)
 \item $I_{H}$ is the identity of the caller
 \item $N_{H}$ is the network properties of the caller
-\setcounter{numberedCntL}{\theenumi}
+\setcounter{numberedCntBB}{\theenumi}
 \end{enumerate}
 
 
@@ -557,7 +557,7 @@ when H conforms to the following restrictions:
 
 
 
-\newcounter{numberedCntM}
+\newcounter{numberedCntBC}
 \begin{enumerate}
 \item $T_{H}\varepsilon \lbrace T_{M_{i},1},T_{M_{i}
 ,2},\ldots ,T_{M_{i},r_{i}}\rbrace \bigcap{\lbrace T_{
@@ -570,7 +570,7 @@ c_{1}},I_{c_{2}},\ldots ,I_{c_{w}}\rbrace }$
 \item $N_{H}\varepsilon \lbrace N_{M_{i},1},N_{M_{i}
 ,2},\ldots ,N_{M_{i},u_{i}}\rbrace \bigcap{\lbrace N_{
 c_{1}},N_{c_{2}},\ldots ,N_{c_{e}}\rbrace }$
-\setcounter{numberedCntM}{\theenumi}
+\setcounter{numberedCntBC}{\theenumi}
 \end{enumerate}
 
 
@@ -684,13 +684,13 @@ presented as a UML activity diagram in Section 3:
 
 
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=12.22cm,height=7.95cm]{media/image4.eps}
 \end{figure}
-\end{center}
 
-\begin{center}\textbf{Fig. . }: State Machine Implementation
+
+\begin{center}\textbf{Fig. 4. }: State Machine Implementation
 \end{center}
 
 
@@ -845,12 +845,12 @@ published through interfaces.
 In our work we have focused on the public interfaces of SOA applications 
 with the following restrictions: 
 
-\newcounter{numberedCntO}
+\newcounter{numberedCntBE}
 \begin{enumerate}
 \item The application should use homogeneous communication platform and 
 
 \item The service should have some information about the clients. 
-\setcounter{numberedCntO}{\theenumi}
+\setcounter{numberedCntBE}{\theenumi}
 \end{enumerate}
 We have described motivating examples showing why it is often not enough 
 to rely ourselves on standard security mechanisms of existing standards. 

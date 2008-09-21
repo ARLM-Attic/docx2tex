@@ -11,15 +11,22 @@ namespace docx2tex
         /// Add an image
         /// </summary>
         /// <param name="xmlNode"></param>
-        private void ProcessDrawing(XmlNode xmlNode)
+        private void ProcessDrawing(XmlNode xmlNode, bool inTable)
         {
             XmlNode blipNode = GetNode(xmlNode, @"./wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip");
 
             if (blipNode != null)
             {
-                // put as figure
-                _tex.AddTextNL(@"\begin{figure}[h]");
-                _tex.AddTextNL(@"\centering");
+                // kill any surrounding styles when simplifying
+                _tex.AddStyleKiller();
+
+                // if we are in a table then no \begin{figure} allowed
+                if (!inTable)
+                {
+                    // put as figure
+                    _tex.AddTextNL(@"\begin{figure}[h]");
+                    _tex.AddTextNL(@"\centering");
+                }
 
                 // apply width and height
                 XmlNode extentNode = GetNode(blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode, "./wp:extent");
@@ -31,7 +38,12 @@ namespace docx2tex
                 XmlNode captionP = blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.NextSibling;
                 // add caption
                 ImageCaption(captionP);
-                _tex.AddTextNL(@"\end{figure}");
+
+                // if we are in a table then no \end{figure} allowed
+                if (!inTable)
+                {
+                    _tex.AddTextNL(@"\end{figure}");
+                }
             }
         }
 
@@ -39,15 +51,22 @@ namespace docx2tex
         /// Add an image
         /// </summary>
         /// <param name="xmlNode"></param>
-        private void ProcessObject(XmlNode xmlNode)
+        private void ProcessObject(XmlNode xmlNode, bool inTable)
         {
             XmlNode imageData = GetNode(xmlNode, "./v:shape/v:imagedata");
 
             if (imageData != null)
             {
-                // put as figure
-                _tex.AddTextNL(@"\begin{figure}[h]");
-                _tex.AddTextNL(@"\centering");
+                // kill any surrounding styles when simplifying
+                _tex.AddStyleKiller();
+
+                // if we are in a table then no \begin{figure} allowed
+                if (!inTable)
+                {
+                    // put as figure
+                    _tex.AddTextNL(@"\begin{figure}[h]");
+                    _tex.AddTextNL(@"\centering");
+                }
 
                 // apply width and height
                 string widthHeightStr = _imagingFn.GetWidthAndHeightFromStyle(GetString(imageData.ParentNode, "@style"));
@@ -58,7 +77,12 @@ namespace docx2tex
                 XmlNode captionP = imageData.ParentNode.ParentNode.ParentNode.ParentNode.NextSibling;
                 // add caption
                 ImageCaption(captionP);
-                _tex.AddTextNL(@"\end{figure}");
+
+                // if we are in a table then no \end{figure} allowed
+                if (!inTable)
+                {
+                    _tex.AddTextNL(@"\end{figure}");
+                }
             }
         }
 
@@ -73,7 +97,7 @@ namespace docx2tex
             // if or if not grouped
             foreach (XmlNode txbxs in GetNodes(xmlNode, ".//v:shape/v:textbox/w:txbxContent"))
             {
-                BulkMainProcessor(txbxs);
+                BulkMainProcessor(txbxs, false, true);
             }
         }
 
@@ -81,11 +105,11 @@ namespace docx2tex
         /// process a set of paragraphs
         /// </summary>
         /// <param name="par"></param>
-        private void BulkMainProcessor(XmlNode par)
+        private void BulkMainProcessor(XmlNode par, bool inTable, bool drawNewLine)
         {
             foreach (XmlNode paragraphNode in GetNodes(par, "./*"))
             {
-                MainProcessor(paragraphNode);
+                MainProcessor(paragraphNode, inTable, drawNewLine);
             }
         }
     }

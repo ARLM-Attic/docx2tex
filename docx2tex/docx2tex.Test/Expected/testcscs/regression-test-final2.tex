@@ -10,21 +10,21 @@
 
 
 
-\begin{center}\end{center}
-
-\begin{center}\end{center}
-
-\begin{center}\end{center}
-
-\begin{center}\end{center}
-
-\begin{center}\end{center}
-
-\begin{center}\end{center}
 
 
 
-\begin{center}\end{center}
+
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{center}\textbf{A New Concept of Effective Regression Test 
 }\end{center}
@@ -59,11 +59,11 @@ $^{2}$4D SOFT Ltd. Telepy u. 24. H-1212, Budapest, Hungary
 
 forgacs@4dsoft.hu
 
-\begin{center}\end{center}
 
-\begin{center}\end{center}
 
-\begin{center}\end{center}
+
+
+
 
 \textbf{Abstract}
 
@@ -357,7 +357,7 @@ an earlier stage.
 Naturally, to detect a faulty modification, the underlying test case 
 has to 
 
-\newcounter{numberedCntL}
+\newcounter{numberedCntBB}
 \begin{enumerate}
 \item reach the fault (it has to be modification traversing with respect 
 to the faulty modification) 
@@ -366,7 +366,7 @@ of the program has to differ from the expected)
 \item the fault has to reach an output statement resulting in a failure 
 (after the traversal through the erroneous statement, an output 
 statement should be reached)
-\setcounter{numberedCntL}{\theenumi}
+\setcounter{numberedCntBB}{\theenumi}
 \end{enumerate}
 
 
@@ -389,11 +389,11 @@ cases have to be selected for a given (possibly erroneous)
 modification. Different techniques can be found in $[$6, 8, 9$]$. 
 Identifying modification traversing test cases requires two steps:
 
-\newcounter{numberedCntW}
+\newcounter{numberedCntCC}
 \begin{enumerate}
 \item The modification needs to be detected
 \item Appropriate test cases have to be identified
-\setcounter{numberedCntW}{\theenumi}
+\setcounter{numberedCntCC}{\theenumi}
 \end{enumerate}
 Of course in the case of real software systems extending possibly 
 millions of lines of code, it is far from being trivial to identify 
@@ -411,28 +411,29 @@ definition of reliable test cases:
 
 
 \textbf{Definition (Reliable test pair).} Let GI=\{I$_{1}$, I
-$_{2}$, ... I$_{M}$\} the set of input variables, I
+$_{2}$, \ldots I$_{M}$\} the set of input variables, I
 \begin{figure}[h]
 \centering
 \includegraphics[width=12.25pt,height=12.25pt]{media/image1.eps}
 \end{figure}
-\{1,...M\}, I=\{i$_{1}$,i$_{2}$,...i$_{n}$\}, J
+\{1,\ldots M\}, I=\{i$_{1}$,i$_{2}$,\ldots i$_{n}$\}, J
 \begin{figure}[h]
 \centering
 \includegraphics[width=12.25pt,height=12.25pt]{media/image1.eps}
 \end{figure}
-\{1,...M\}, J=\{j$_{1}$,...j$_{k}$\} index sets. Consider the 
-following test cases: t$_{1}$:=$<$i$_{i1}$, i$_{i2}$, ... i
-$_{in}$$>$, t$_{2}$:=$<$i$_{j1}$,i$_{j2}$,...i$_{jk
-}$$>$, where i$_{i1}$, i$_{i2}$,... i$_{in}$, i$_{j1}$, 
-i$_{j2}$, ... i$_{jk}$ are the values of the corresponding input 
-variables. A pair (t$_{1}$, t$_{2}$) of test cases is a 
-reliable test pair with respect to statement s$^{q}$ (where s$^{q
-}$ represents the q$^{th}$ execution of statement s) if t$_{1}$ 
-and t$_{2}$ travels along the same execution path until s$^{q}$, 
-the result of s$^{q}$ differs for t$_{1}$ and t$_{2}$, and t
-$_{1}$ and t$_{2}$ are 'close' to each other (for numeric values 
-the difference should be minimized according to some metric).
+\{1,\ldots M\}, J=\{j$_{1}$,\ldots j$_{k}$\} index sets. 
+Consider the following test cases: t$_{1}$:=$<$i$_{i1}$, i$_{
+i2}$, \ldots i$_{in}$$>$, t$_{2}$:=$<$i$_{j1}$,i$_{j2
+}$,\ldots i$_{jk}$$>$, where i$_{i1}$, i$_{i2}$,\ldots i
+$_{in}$, i$_{j1}$, i$_{j2}$, \ldots i$_{jk}$ are the 
+values of the corresponding input variables. A pair (t$_{1}$, t$_{
+2}$) of test cases is a reliable test pair with respect to statement s
+$^{q}$ (where s$^{q}$ represents the q$^{th}$ execution of 
+statement s) if t$_{1}$ and t$_{2}$ travels along the same 
+execution path until s$^{q}$, the result of s$^{q}$ differs for t
+$_{1}$ and t$_{2}$, and t$_{1}$ and t$_{2}$ are 'close' to 
+each other (for numeric values the difference should be minimized 
+according to some metric).
 
 
 
@@ -448,11 +449,11 @@ according to some metric. For the Eucledian metric, this would be
 
 
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=78.15pt,height=31.65pt]{media/image2.eps}
 \end{figure}
-\end{center}
+
 
 
 
@@ -482,7 +483,7 @@ framework is the following:
 
 
 
-\newcounter{numberedCntX}
+\newcounter{numberedCntCD}
 \begin{enumerate}
 \item Identify modifications
 \item Select modification traversing test cases from the original test 
@@ -494,7 +495,7 @@ suite
 \end{enumerate}
 \item Generate a test pair in the reduced variable space using 
 influencing input variables
-\setcounter{numberedCntX}{\theenumi}
+\setcounter{numberedCntCD}{\theenumi}
 \end{enumerate}
 
 
@@ -786,7 +787,7 @@ int *ip = *jp = \&n;
 
 *ip = 3; //original: *ip = 6;
 
-...
+\ldots 
 
 if(*jp $>$ 5)
 
@@ -1176,24 +1177,24 @@ ed as an abstract class, and all other operations derive from this
 class. In this simplified source we use two operations: addition and 
 multiplication.
 
-\newcounter{numberedCntK}
+\newcounter{numberedCntBA}
 \begin{enumerate}
 \item \#include $<$iostream$>$
 \item \#include $<$string$>$
 \item \#include $<$stdlib.h$>$
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item using namespace std;
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item namespace MathOperation
 \item \{
 \item  class Operation //base class
@@ -1203,12 +1204,12 @@ multiplication.
 \item  virtual int DoOperation(int x,int y)=0; 
 \item  virtual string OpName()=0; 
 \item  \};
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item  //Derived class 1
 \item  class AddOperation: public Operation 
 \item  \{
@@ -1217,12 +1218,12 @@ multiplication.
  \{return x + y;\}
 \item  string OpName() \{return "Add";\}
 \item  \};
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item  //Derived class 2
 \item  class MulOperation: public Operation
 \item  \{
@@ -1232,12 +1233,12 @@ multiplication.
 \item  string OpName() \{return "Mul";\}
 \item  \};
 \item \}
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item class CImpactAnal
 \item \{
 \item public:
@@ -1253,26 +1254,26 @@ multiplication.
 \item  //original: int opcode2=opcode;
 \item  int opcode2=opcode-1;
 \item  if(opcode2 $>$ 1) 
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
  op = new MathOperation::AddOperation();
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item  else
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
  op = new MathOperation::MulOperation();
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item  lastOp = op;
 \item  cout $<$$<$ " Result: " $<$$<$ \\
  op-$>$DoOperation(x, y) $<$$<$ endl;
 \item  \}
 \item  void LastOperation()
 \item  \{
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 \ \ \ \  cout $<$$<$ "Last op: " $<$$<$ 
 
@@ -1281,7 +1282,7 @@ multiplication.
  delete lastOp;
 
 \begin{enumerate}
-\setcounter{enumi}{\thenumberedCntK}
+\setcounter{enumi}{\thenumberedCntBA}
 \item  \}
 \item private:
 \item  int opcode;
@@ -1297,7 +1298,7 @@ multiplication.
 \item  ia-$>$LastOperation();
 \item  return 0;
 \item \}
-\setcounter{numberedCntK}{\theenumi}
+\setcounter{numberedCntBA}{\theenumi}
 \end{enumerate}
 Listing 5\textbf{: C++ example code}
 

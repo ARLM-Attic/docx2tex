@@ -15,13 +15,14 @@ namespace docx2tex
         /// <param name="inVerbatim"></param>
         private void ParagraphRuns(XmlNode paraNode, bool inTable, bool inVerbatim)
         {
-            string lastFieldCommand = "none";
-
             // apply paragraph level styling for standard paragraphs
             if (!inTable && !inVerbatim)
             {
                 TextParaStyleStart(GetNode(paraNode, "./w:pPr"));
             }
+
+            var lastRunInfo = new RunInfo();
+            //string lastCFC = "!!!NONE!!!";
 
             // process all runs
             foreach (XmlNode run in GetNodes(paraNode, "./w:r|./m:oMathPara|./m:oMath|./w:smartTag|./w:hyperlink"))
@@ -29,13 +30,13 @@ namespace docx2tex
                 // normal runs
                 if (run.Name == "w:r")
                 {
-                    ProcessSingleRun(inVerbatim, ref lastFieldCommand, run);
+                    lastRunInfo = ProcessSingleRun(inVerbatim, lastRunInfo, run, inTable);
                 }
                 else if(run.Name == "w:smartTag" || run.Name == "w:hyperlink")
                 {   // when runs are under smartTags or hyperlinks
                     foreach (XmlNode stRun in GetNodes(run, ".//w:r"))
                     {
-                        ProcessSingleRun(inVerbatim, ref lastFieldCommand, stRun);
+                        lastRunInfo = ProcessSingleRun(inVerbatim, lastRunInfo, stRun, inTable);
                     }
                 }
                 // math paragraph
@@ -58,8 +59,10 @@ namespace docx2tex
             }
         }
 
-        private void ProcessSingleRun(bool inVerbatim, ref string lastFieldCommand, XmlNode run)
+        private RunInfo ProcessSingleRun(bool inVerbatim, RunInfo prevRunInfo, XmlNode run, bool inTable)
         {
+            var currentRunInfo = new RunInfo(prevRunInfo);
+
             // if it is not verbatim then process breaks and styles
             if (!inVerbatim)
             {
@@ -93,39 +96,69 @@ namespace docx2tex
                 }
             }
 
-            string tmp = GetString(run, @"./w:fldChar[@w:fldCharType='begin' or @w:fldCharType='end']/@w:fldCharType");
-            // store the last crossref field command (begin or end)
-            if (!string.IsNullOrEmpty(tmp))
+            string tmpFld = GetString(run, @"./w:fldChar[@w:fldCharType='begin' or @w:fldCharType='separate' or @w:fldCharType='end']/@w:fldCharType");
+            
+            // store the last crossref field command (begin or separator or end)
+            if (!string.IsNullOrEmpty(tmpFld))
             {
-                lastFieldCommand = tmp;
+                currentRunInfo.CFC = tmpFld;
             }
 
-            // if we are in a crossref
-            bool areWeInCrossReferenceField = lastFieldCommand == "begin";
-            // if we are in some embedded content
-            bool areWeInEmbeddedContent = GetNode(run, "./w:drawing") != null ||
-                GetNode(run, "./w:object") != null ||
-                GetNode(run, "./w:pict") != null;
+            // query the name of the bookmark
             string currentBookmarkName = GetString(run, "./w:instrText");
 
-            // process as normal run
-            if (!areWeInCrossReferenceField && !areWeInEmbeddedContent)
+            // if set
+            if (!string.IsNullOrEmpty(currentBookmarkName))
             {
-                TextRun(GetString(run, "./w:t"), inVerbatim);
+                // it is a crossref
+                if (currentBookmarkName.StartsWith(" REF "))
+                {
+                    currentRunInfo.InstrTextType = InstrTextTypeEnum.Reference;
+                }
+                else
+                {
+                    // it is not a cross ref
+                    currentRunInfo.InstrTextType = InstrTextTypeEnum.OtherField;
+                }
             }
-            else if (!areWeInCrossReferenceField && areWeInEmbeddedContent)
-            {
-                // if it is an embedded content
 
-                if (GetNode(run, "./w:drawing") != null)
+            // if end then no instrtext 
+            if(currentRunInfo.CFC == "end")
+            {
+                // no field found
+                currentRunInfo.InstrTextType = InstrTextTypeEnum.None;
+            }
+
+            // if we are in the exact bookmark reference in the begin part of the CFC then this is a reference
+            if (currentRunInfo.CFC == "begin" && currentRunInfo.InstrTextType == InstrTextTypeEnum.Reference && !string.IsNullOrEmpty(currentBookmarkName))
+            {
+                ProcessReference(currentBookmarkName);
+            }
+            // else standard text or object
+            else if (
+                // no CFC at all
+                (currentRunInfo.CFC == null)
+                // if we are after a separate cfc an not reference field was here then we are interested in the text
+                || (currentRunInfo.CFC == "separate" && (currentRunInfo.InstrTextType == InstrTextTypeEnum.None || currentRunInfo.InstrTextType == InstrTextTypeEnum.OtherField))
+                // or if we are after the fields
+                || (currentRunInfo.CFC == "end")
+                )
+            {
+                string text = GetString(run, "./w:t");
+                // if standard text
+                if (!string.IsNullOrEmpty(text))
+                {
+                    TextRun(text, inVerbatim);
+                }
+                else if (GetNode(run, "./w:drawing") != null)
                 {
                     // image
-                    ProcessDrawing(GetNode(run, "./w:drawing"));
+                    ProcessDrawing(GetNode(run, "./w:drawing"), inTable);
                 }
                 else if (GetNode(run, "./w:object") != null)
                 {
                     // image
-                    ProcessObject(GetNode(run, "./w:object"));
+                    ProcessObject(GetNode(run, "./w:object"), inTable);
                 }
                 else if (GetNode(run, "./w:pict") != null)
                 {
@@ -133,17 +166,13 @@ namespace docx2tex
                     ProcessPict(GetNode(run, "./w:pict"));
                 }
             }
-            else if (areWeInCrossReferenceField && !string.IsNullOrEmpty(currentBookmarkName))
-            {
-                // process cross references
-                ProcessReference(currentBookmarkName);
-            }
 
             // apply styles if not verbatim
             if (!inVerbatim)
             {
                 TextRunStyleEnd(GetNode(run, "./w:rPr"));
             }
+            return currentRunInfo;
         }
 
         /// <summary>
@@ -167,5 +196,33 @@ namespace docx2tex
                 _tex.AddVerbatim(_texingFn.VerbatimizeText(t));
             }
         }
+    }
+
+    enum InstrTextTypeEnum
+    {
+        None,
+        Reference = 1,
+        OtherField = 2
+    }
+
+    /// <summary>
+    /// Information about a run
+    /// </summary>
+    class RunInfo
+    {
+        public RunInfo()
+        {
+            CFC = null;
+            InstrTextType = InstrTextTypeEnum.None;
+        }
+
+        public RunInfo(RunInfo other)
+        {
+            CFC = other.CFC;
+            InstrTextType = other.InstrTextType;
+        }
+
+        public string CFC { get; set; }
+        public InstrTextTypeEnum InstrTextType { get; set; }
     }
 }

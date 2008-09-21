@@ -52,25 +52,33 @@ namespace docx2tex
         {
             Header();
 
+            int cntNodes = CountNodes(_doc, "/w:document/w:body/*");
+
+            int cnt = 0;
             foreach (XmlNode paragraphNode in GetNodes(_doc, "/w:document/w:body/*"))
             {
-                MainProcessor(paragraphNode);
+                MainProcessor(paragraphNode, false, true);
+                cnt++;
+                Console.Write("Processed: {0} percent\r", cnt * 100 / cntNodes);
             }
 
             Footer();
+            Console.WriteLine("Generated temporary data structure.");
 
-            return _tex.ToString();
+            string tex = _tex.ConvertToString();
+            Console.WriteLine("done.");
+            return tex;
         }
 
         /// <summary>
         /// Processes a paragraph or a table
         /// </summary>
         /// <param name="paragraphNode"></param>
-        private void MainProcessor(XmlNode paragraphNode)
+        private void MainProcessor(XmlNode paragraphNode, bool inTable, bool drawNewLine)
         {
             if (paragraphNode.Name == "w:p")
             {
-                ProcessParagraph(paragraphNode, paragraphNode.PreviousSibling, paragraphNode.NextSibling);
+                ProcessParagraph(paragraphNode, paragraphNode.PreviousSibling, paragraphNode.NextSibling, inTable, drawNewLine);
             }
             else if (paragraphNode.Name == "w:tbl")
             {

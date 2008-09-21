@@ -16,11 +16,12 @@ namespace docx2tex
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("docx2tex was created by Pocza, Krisztian in 2007, 2008 under the terms of BSD licence");
+            Console.WriteLine("docx2tex was created by Krisztian Pocza in 2007-2008 under the terms of BSD licence");
             Console.WriteLine("info: kpocza@kpocza.net");
+            Console.WriteLine();
+            //Console.ReadLine();
             if (args.Length < 2)
             {
-                Console.WriteLine();
                 Console.WriteLine("Usage:");
                 Console.WriteLine("docx2tex.exe source.docx dest.tex");
                 return;
@@ -33,32 +34,41 @@ namespace docx2tex
 
             EnsureMediaPath(documentPath);
 
-            using (Package pkg = Package.Open(inputDocxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            Package pkg = null;
+            try
             {
-                ZipPackagePart documentPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/document.xml", UriKind.Relative));
-                
-                //numbering part may not exist for simple documents
-                ZipPackagePart numberingPart = null;
-                if (pkg.PartExists(new Uri("/word/numbering.xml", UriKind.Relative)))
+                pkg = Package.Open(inputDocxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            }
+            catch(Exception ex)
+            {
+                // this happens mostly when the user leaves the Word file open
+                Console.WriteLine(ex.Message);
+                return;
+            }
+
+            ZipPackagePart documentPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/document.xml", UriKind.Relative));
+            
+            //numbering part may not exist for simple documents
+            ZipPackagePart numberingPart = null;
+            if (pkg.PartExists(new Uri("/word/numbering.xml", UriKind.Relative)))
+            {
+                numberingPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/numbering.xml", UriKind.Relative));
+            }
+
+            Numbering numbering = new Numbering(numberingPart);
+            Styling styling = new Styling(inputDocxPath);
+            Imaging imaging = new Imaging(documentPart, inputDocxPath, outputTexPath);
+            TeXing texing = new TeXing();
+
+            using (Stream documentXmlStream = documentPart.GetStream())
+            {
+                Engine engine = new Engine(documentXmlStream, numbering, styling, imaging, texing);
+                string outputString = engine.Process();
+                string latexSource = ReplaceSomeCharacters(outputString);
+
+                using (StreamWriter outputTexStream = new StreamWriter(outputTexPath, false, Encoding.Default))
                 {
-                    numberingPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/numbering.xml", UriKind.Relative));
-                }
-
-                Numbering numbering = new Numbering(numberingPart);
-                Styling styling = new Styling(inputDocxPath);
-                Imaging imaging = new Imaging(documentPart, inputDocxPath, outputTexPath);
-                TeXing texing = new TeXing();
-
-                using (Stream documentXmlStream = documentPart.GetStream())
-                {
-                    Engine engine = new Engine(documentXmlStream, numbering, styling, imaging, texing);
-                    string outputString = engine.Process();
-                    string latexSource = ReplaceSomeCharacters(outputString);
-
-                    using (StreamWriter outputTexStream = new StreamWriter(outputTexPath, false, Encoding.Default))
-                    {
-                        outputTexStream.Write(latexSource);
-                    }
+                    outputTexStream.Write(latexSource);
                 }
             }
 

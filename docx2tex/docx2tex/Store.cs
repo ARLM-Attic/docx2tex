@@ -72,22 +72,147 @@ namespace docx2tex
             _runs.Add(new StyleEndRun(styleEnum, _stylingFn));
         }
 
+        public void AddStyleKiller()
+        {
+            _runs.Add(new StyleKillerRun());
+        }
+
         #endregion
 
         #region Convert to "TeXString"
 
-		public override string ToString()
+		public string ConvertToString()
         {
             var originalRuns = _runs;
             List<Run> simplifiedRuns;
+
+            Console.WriteLine("Removing unusable styles...");
+            // run style killer
+            // delete styles that suround some float
+            originalRuns = RunStyleKillers(originalRuns);
+
+            Console.WriteLine("Removing empty styles...");
+            // kill style pairs that do not have content while there are any
+            while (KillEmptyStyles(out simplifiedRuns, originalRuns))
+            {
+                originalRuns = simplifiedRuns;
+            }
+
+            Console.WriteLine("Compacting runs...");
             // simplify the runs as long as they can be simplified
             while (Simplify(out simplifiedRuns, originalRuns))
             {
                 originalRuns = simplifiedRuns;
             }
 
+            Console.WriteLine("Correcting line lengths...");
             // split the line lengths
             return CorrectLineLengths(simplifiedRuns);
+        }
+
+        #endregion
+
+        #region Helper : Kill extra Styles
+
+        private List<Run> RunStyleKillers(List<Run> originalRuns)
+        {
+            List<Run> simplifiedRuns = new List<Run>(originalRuns);
+            int cntActiveStyles = 0;
+
+            for (int i = 0; i < simplifiedRuns.Count; i++)
+            {
+                Run run = simplifiedRuns[i];
+
+                if (run is StyleStartRun)
+                {
+                    cntActiveStyles++;
+                }
+                else if (run is StyleEndRun)
+                {
+                    cntActiveStyles--;
+                }
+
+                if (run is StyleKillerRun && cntActiveStyles > 0)
+                {
+                    int cnt = cntActiveStyles;
+
+                    int effectiveCnt = 0;
+                    int j = i - 1;
+                    while (cnt > 0 && j > 0)
+                    {
+                        if (simplifiedRuns[j] is StyleStartRun)
+                        {
+                            effectiveCnt++;
+                            if (effectiveCnt > 0)
+                            {
+                                simplifiedRuns.RemoveAt(j);
+                                effectiveCnt--;
+                                cnt--;
+                                i--;
+                            }
+                        }
+                        else if (simplifiedRuns[j] is StyleEndRun)
+                        {
+                            effectiveCnt--;
+                        }
+                        j--;
+                    }
+
+                    cnt = cntActiveStyles;
+
+                    effectiveCnt = 0;
+                    j = i + 1;
+
+                    while (cnt > 0 && j < simplifiedRuns.Count)
+                    {
+                        if (simplifiedRuns[j] is StyleEndRun)
+                        {
+                            effectiveCnt++;
+                            if (effectiveCnt > 0)
+                            {
+                                simplifiedRuns.RemoveAt(j);
+                                effectiveCnt--;
+                                cnt--;
+                                j--;
+                            }
+                        }
+                        else if (simplifiedRuns[j] is StyleStartRun)
+                        {
+                            effectiveCnt--;
+                        }
+                        j++;
+                    }
+                }
+            }
+            return simplifiedRuns;
+        }
+
+        #endregion
+
+        #region Helper : Kill empty Styles
+
+        private bool KillEmptyStyles(out List<Run> simplifiedRuns, List<Run> originalRuns)
+        {
+            bool didKill = false;
+            simplifiedRuns = new List<Run>(originalRuns);
+
+            simplifiedRuns.RemoveAll(r => (r is TextRun) && string.IsNullOrEmpty((r as TextRun).Text));
+
+            for (int i = 0; i < simplifiedRuns.Count - 1; i++)
+            {
+                Run run1 = simplifiedRuns[i];
+                Run run2 = simplifiedRuns[i + 1];
+
+                if (run1 is StyleStartRun && run2 is StyleEndRun && 
+                    (run1 as StyleRun).Style == (run2 as StyleRun).Style)
+                {
+                    simplifiedRuns.RemoveAt(i); //ith
+                    simplifiedRuns.RemoveAt(i); // i+1th
+                    i--;
+                    didKill = true;
+                }
+            }
+            return didKill;
         }
 
         #endregion
@@ -313,6 +438,15 @@ namespace docx2tex
             get { return _stylingFn.Enum2TextEnd(this.Style); }
         }
     }
+
+    class StyleKillerRun : Run
+    {
+        public override string TeXText
+        {
+            get { return string.Empty; }
+        }
+    }
+
 
 	#endregion
 }

@@ -14,7 +14,7 @@ namespace docx2tex
         /// <param name="paragraphNode"></param>
         /// <param name="prevNode"></param>
         /// <param name="nextNode"></param>
-        private void ProcessParagraph(XmlNode paragraphNode, XmlNode prevNode, XmlNode nextNode)
+        private void ProcessParagraph(XmlNode paragraphNode, XmlNode prevNode, XmlNode nextNode, bool inTable, bool drawNewLine)
         {
             // list settings of the current paragraph
             int? currentNumId = GetInt(paragraphNode, "./w:pPr/w:numPr/w:numId/@w:val");
@@ -69,7 +69,7 @@ namespace docx2tex
             }
 
             // this will process the real content of the paragraph
-            ProcessParagraphContent(paragraphNode, prevNode, nextNode, true, false, isList);
+            ProcessParagraphContent(paragraphNode, prevNode, nextNode, drawNewLine&true, inTable|false, isList);
 
             // in case of list
             if (isList)

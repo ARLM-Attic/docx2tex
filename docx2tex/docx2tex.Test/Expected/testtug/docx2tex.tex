@@ -149,8 +149,8 @@ files to TeX. The Core Engine is responsible for reading and processing
 the XML data of the OOXML documents that is served by the OOXML 
 depackaging component. The Core Engine identifies parts of the OOXML 
 document and processes the contents of these parts (paragraphs, runs, 
-tables, image references, numberings, ...). It is not responsible for 
-processing parts of the OOXML document that are available through a 
+tables, image references, numberings, \ldots ). It is not responsible 
+for processing parts of the OOXML document that are available through a 
 relation. Docx2tex has a set of internal \textit{Helper functions} 
 that are responsible for driving the processing of related entities 
 like image conversion, special styling and resolve the properties of 
@@ -176,12 +176,12 @@ lines length at some predefined value (default is 72).
 The previous description is illustrated by the following UML sequence 
 diagram:
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=14.20cm,height=13.60cm]{media/image1.eps}
 \caption{\label{figure:_Ref194044987}: UML sequence diagram}
 \end{figure}
-\end{center}
+
 
 
 \section{Features of Docx2tex}
@@ -194,7 +194,7 @@ Docx2tex supports the following features of Word 2007 and TeX:
 \newcounter{numberedCntD}
 \begin{enumerate}
 \item Normal text
-\item Italic, bold, underlined, stroked, small capitals, ...
+\item Italic, bold, underlined, stroked, small capitals, \ldots 
 \item Left, right, center aligned text
 \item Headings - sections (3 levels)
 \item Verbatim text
@@ -208,7 +208,7 @@ Docx2tex supports the following features of Word 2007 and TeX:
 \item Image conversion from various formats (incl. .png and .jpeg) to 
 .eps
 \item Substitution of special characters (e.g. $\backslash$, \#, \{, \}, 
-$[$, $]$, \%, \&, \~, ...)
+$[$, $]$, \%, \&, \~, \ldots )
 \item Text boxes
 \setcounter{numberedCntD}{\theenumi}
 \end{enumerate}
@@ -603,8 +603,8 @@ structure or change the appearance of text. When we want to place these
 special characters in fluent text they have to be described in a special 
 way.
 
-Consider the following set of special characters: $<$$>$ as'q ...\# 
-$\backslash$ \{ \} \% \~ \_ \^{} \& \$ "\," \\
+Consider the following set of special characters: $<$$>$ as'q \ldots 
+\# $\backslash$ \{ \} \% \~ \_ \^{} \& \$ "\," \\
 These are described in OOXML in the following form:
 
 \begin{verbatim}
@@ -656,12 +656,12 @@ conference or journal. Now the article can be submitted.
 
 The previous workflow is illustrated in \ref{figure:_Ref196063639}..
 
-\begin{center}\begin{figure}[h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=12.55cm,height=10.68cm]{media/image2.eps}
 \caption{\label{figure:_Ref196063639}: Workflow}
 \end{figure}
-\end{center}
+
 
 
 As it can be seen we exploited the strengths of both the WYSIWYG Word 

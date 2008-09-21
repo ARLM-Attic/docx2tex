@@ -30,11 +30,13 @@ namespace docx2tex
                 //columns
                 foreach (XmlNode tc in GetNodes(tr, "w:tc"))
                 {
-                    //content
-                    foreach (XmlNode tcPara in GetNodes(tc, "w:p"))
-                    {
-                        ParagraphRuns(tcPara, true, false);
-                    }
+                    BulkMainProcessor(tc, true, false);
+                    ////content
+                    //foreach (XmlNode tcPara in GetNodes(tc, "w:p"))
+                    //{
+                    //    BulkMainProcessor(XmlNode par)
+                    //    ParagraphRuns(tcPara, true, false);
+                    //}
                     if (tc.NextSibling != null)
                     {
                         _tex.AddText(" & ");

@@ -120,6 +120,10 @@ namespace docx2tex
                     return @"$^{";
                 case StyleEnum.SubScript:
                     return @"$_{";
+                case StyleEnum.ParaFlushRight:
+                    return @"\begin{flushright}";
+                case StyleEnum.ParaCenter:
+                    return @"\begin{center}";
             }
             return string.Empty;
         }
@@ -147,6 +151,10 @@ namespace docx2tex
                     return @"}$";
                 case StyleEnum.SubScript:
                     return @"}$";
+                case StyleEnum.ParaFlushRight:
+                    return @"\end{flushright}";
+                case StyleEnum.ParaCenter:
+                    return @"\end{center}";
             }
             return string.Empty;
         }
@@ -154,6 +162,7 @@ namespace docx2tex
 
     enum StyleEnum
     {
+        // run styles
         TextIt,
         TextBf,
         Underline,
@@ -162,6 +171,10 @@ namespace docx2tex
         TextSc,
         TextC,
         SuperScript,
-        SubScript
+        SubScript,
+
+        // paragraph styles
+        ParaFlushRight,
+        ParaCenter,
     }
 }
