@@ -5,7 +5,7 @@ using System.Reflection;
 using System.IO;
 using System.Xml;
 
-namespace docx2tex.Data
+namespace docx2tex.Library.Data
 {
     /// <summary>
     /// Codetable for math and other LaTeX symbols
@@ -29,7 +29,7 @@ namespace docx2tex.Data
             Assembly ass = Assembly.GetExecutingAssembly();
 
             // load embedded resource
-            using (Stream stream = ass.GetManifestResourceStream("docx2tex.Data.CodeTable.xml"))
+            using (Stream stream = ass.GetManifestResourceStream("docx2tex.Library.Data.CodeTable.xml"))
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(stream);

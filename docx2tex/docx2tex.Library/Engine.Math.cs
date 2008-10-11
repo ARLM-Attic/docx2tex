@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using docx2tex.Data;
+using docx2tex.Library.Data;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     partial class Engine
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     class Styling
     {

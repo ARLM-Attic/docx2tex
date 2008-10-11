@@ -5,7 +5,7 @@ using System.IO.Packaging;
 using System.IO;
 using System.Xml;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     class Numbering
     {

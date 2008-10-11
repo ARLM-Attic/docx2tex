@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using System.IO.Packaging;
 using System.IO;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Configuration;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
+using docx2tex.Library;
 
 namespace docx2tex
 {
@@ -26,51 +25,23 @@ namespace docx2tex
                 Console.WriteLine("docx2tex.exe source.docx dest.tex");
                 return;
             }
-            
-            string inputDocxPath = ResolveFullPath(args[0]);
-            string outputTexPath = ResolveFullPath(args[1]);
-            
-            string documentPath = Path.GetDirectoryName(outputTexPath);
 
-            EnsureMediaPath(documentPath);
-
-            Package pkg = null;
+            int ll = 72;
             try
             {
-                pkg = Package.Open(inputDocxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                int.TryParse(ConfigurationManager.AppSettings["LineLength"], out ll);
             }
-            catch(Exception ex)
+            finally
             {
-                // this happens mostly when the user leaves the Word file open
-                Console.WriteLine(ex.Message);
-                return;
+                Config.Instance.LineLength = ll;
             }
 
-            ZipPackagePart documentPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/document.xml", UriKind.Relative));
-            
-            //numbering part may not exist for simple documents
-            ZipPackagePart numberingPart = null;
-            if (pkg.PartExists(new Uri("/word/numbering.xml", UriKind.Relative)))
-            {
-                numberingPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/numbering.xml", UriKind.Relative));
-            }
+            Config.Instance.ImageMagickPath = ConfigurationManager.AppSettings["ImageMagick"];
 
-            Numbering numbering = new Numbering(numberingPart);
-            Styling styling = new Styling(inputDocxPath);
-            Imaging imaging = new Imaging(documentPart, inputDocxPath, outputTexPath);
-            TeXing texing = new TeXing();
+            string inputDocxPath = ResolveFullPath(args[0]);
+            string outputTexPath = ResolveFullPath(args[1]);
 
-            using (Stream documentXmlStream = documentPart.GetStream())
-            {
-                Engine engine = new Engine(documentXmlStream, numbering, styling, imaging, texing);
-                string outputString = engine.Process();
-                string latexSource = ReplaceSomeCharacters(outputString);
-
-                using (StreamWriter outputTexStream = new StreamWriter(outputTexPath, false, Encoding.Default))
-                {
-                    outputTexStream.Write(latexSource);
-                }
-            }
+            new Docx2TexWorker().Process(inputDocxPath, outputTexPath);
 
             using (StreamReader sr = new StreamReader(outputTexPath))
             {
@@ -85,21 +56,6 @@ namespace docx2tex
                 return path;
             }
             return Path.Combine(Environment.CurrentDirectory, path);
-        }
-
-        private static string ReplaceSomeCharacters(string latexSource)
-        {
-            latexSource = latexSource.Replace("!!!DOLLARSIGN!!!", "\\$");
-            return latexSource;
-        }
-
-        private static void EnsureMediaPath(string documentPath)
-        {
-            string mediaPath = Path.Combine(documentPath, "media");
-            if (!Directory.Exists(mediaPath))
-            {
-                Directory.CreateDirectory(mediaPath);
-            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     partial class Engine
     {

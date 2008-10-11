@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.IO;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     partial class Engine
     {
@@ -96,6 +96,7 @@ namespace docx2tex
             _tex.AddTextNL(@"\usepackage{graphicx}");
             _tex.AddTextNL(@"\usepackage{ulem}");
             _tex.AddTextNL(@"\usepackage{amsmath}");
+
             _tex.AddTextNL(@"\begin{document}");
         }
 

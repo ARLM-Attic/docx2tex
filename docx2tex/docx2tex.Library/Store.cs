@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     class Store
     {
@@ -24,11 +24,7 @@ namespace docx2tex
 
         static Store()
         {
-            int ll = 0;
-            if (int.TryParse(ConfigurationManager.AppSettings["LineLength"], out ll))
-            {
-                LINELENGTH = ll;
-            }
+            LINELENGTH = Config.Instance.LineLength;
         }
 
         public Store(Styling stylingFn)

@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("docx2tex")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("docx2tex Engine")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("docx2tex")]
-[assembly: AssemblyCopyright("Copyright © Krisztián Pócza 2007-2008")]
+[assembly: AssemblyCopyright("Copyright © Krisztián Pócza 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("da1adee7-3b33-4552-8a5b-b298bb867a54")]
+[assembly: Guid("ad2997a0-589e-4417-8d9c-26fe545f12ad")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,5 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.2.718.0")]
 [assembly: AssemblyFileVersion("0.2.718.0")]

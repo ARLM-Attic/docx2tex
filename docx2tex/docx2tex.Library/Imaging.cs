@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Diagnostics;
 
-namespace docx2tex
+namespace docx2tex.Library
 {
     class Imaging
     {
@@ -97,7 +97,7 @@ namespace docx2tex
         private static void ConvertImageToEPS(string orginalImagePath, string newImagePath)
         {
             string epsImagePath = Path.ChangeExtension(newImagePath, "eps");
-            string imageMagickPath = ConfigurationManager.AppSettings["ImageMagick"];
+            string imageMagickPath = Config.Instance.ImageMagickPath;
             
             if(string.IsNullOrEmpty(imageMagickPath))
             {

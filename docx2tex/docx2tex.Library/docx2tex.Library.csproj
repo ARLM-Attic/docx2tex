@@ -1,20 +1,17 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{574BFC8E-2B47-47E0-B4DB-1F8B4423229E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{66DAF230-0815-4564-A1E1-BA244179192E}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>docx2tex</RootNamespace>
-    <AssemblyName>docx2tex</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <RootNamespace>docx2tex.Library</RootNamespace>
+    <AssemblyName>docx2tex.Library</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -24,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\out\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,31 +29,43 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\out\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Data\CodeTable.cs" />
+    <Compile Include="Docx2TexWorker.cs" />
+    <Compile Include="Engine.CapRefs.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="Engine.Helpers.cs" />
+    <Compile Include="Engine.Math.cs" />
+    <Compile Include="Engine.Objects.cs" />
+    <Compile Include="Engine.Paragraph.cs" />
+    <Compile Include="Engine.Runs.cs" />
+    <Compile Include="Engine.Styling.cs" />
+    <Compile Include="Engine.Table.cs" />
+    <Compile Include="Imaging.cs" />
+    <Compile Include="Numbering.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Store.cs" />
+    <Compile Include="Styling.cs" />
+    <Compile Include="TeXing.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <EmbeddedResource Include="Data\CodeTable.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\docx2tex.Library\docx2tex.Library.csproj">
-      <Project>{66DAF230-0815-4564-A1E1-BA244179192E}</Project>
-      <Name>docx2tex.Library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
