@@ -119,15 +119,15 @@ namespace docx2tex.Library
                 // put sections
                 if (paraStyle == _stylingFn.ResolveParaStyle("section"))
                 {
-                    _tex.AddText(@"\section{");
+                    _tex.AddText(Config.Instance.LaTeXTags.Section + "{");
                 }
                 else if (paraStyle == _stylingFn.ResolveParaStyle("subsection"))
                 {
-                    _tex.AddText(@"\subsection{");
+                    _tex.AddText(Config.Instance.LaTeXTags.SubSection + "{");
                 }
                 else if (paraStyle == _stylingFn.ResolveParaStyle("subsubsection"))
                 {
-                    _tex.AddText(@"\subsubsection{");
+                    _tex.AddText(Config.Instance.LaTeXTags.SubSubSection + "{");
                 }
 
                 // put text
@@ -156,7 +156,7 @@ namespace docx2tex.Library
                 // the first verbatim is begining
                 if (!wasVerbatim)
                 {
-                    _tex.AddText(@"\begin{verbatim}");
+                    _tex.AddText(Config.Instance.LaTeXTags.BeginVerbatim);
                 }
                 _tex.AddNL();
                 // content
@@ -165,7 +165,7 @@ namespace docx2tex.Library
                 if (!willVerbatim)
                 {
                     _tex.AddNL();
-                    _tex.AddTextNL(@"\end{verbatim}");
+                    _tex.AddTextNL(Config.Instance.LaTeXTags.EndVerbatim);
                 }
             }
             else if (CountNodes(paraNode, @"./w:fldSimple[starts-with(@w:instr, ' SEQ ')]") > 0)

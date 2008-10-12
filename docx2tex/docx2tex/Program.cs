@@ -18,7 +18,7 @@ namespace docx2tex
             Console.WriteLine("docx2tex was created by Krisztian Pocza in 2007-2008 under the terms of BSD licence");
             Console.WriteLine("info: kpocza@kpocza.net");
             Console.WriteLine();
-            //Console.ReadLine();
+//            Console.ReadLine();
             if (args.Length < 2)
             {
                 Console.WriteLine("Usage:");
@@ -26,20 +26,10 @@ namespace docx2tex
                 return;
             }
 
-            int ll = 72;
-            try
-            {
-                int.TryParse(ConfigurationManager.AppSettings["LineLength"], out ll);
-            }
-            finally
-            {
-                Config.Instance.LineLength = ll;
-            }
-
-            Config.Instance.ImageMagickPath = ConfigurationManager.AppSettings["ImageMagick"];
-
             string inputDocxPath = ResolveFullPath(args[0]);
             string outputTexPath = ResolveFullPath(args[1]);
+
+            StaticConfigHelper.DocxPath = inputDocxPath;
 
             new Docx2TexWorker().Process(inputDocxPath, outputTexPath);
 

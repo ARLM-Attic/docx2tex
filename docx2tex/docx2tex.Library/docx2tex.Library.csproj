@@ -43,7 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Data\CodeTable.cs" />
     <Compile Include="Docx2TexWorker.cs" />
     <Compile Include="Engine.CapRefs.cs" />

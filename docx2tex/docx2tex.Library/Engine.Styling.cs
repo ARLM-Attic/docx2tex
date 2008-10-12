@@ -131,12 +131,10 @@ namespace docx2tex.Library
                     if (align == "right")
                     {
                         _tex.AddStartStyle(StyleEnum.ParaFlushRight);
-//                        _tex.AddText(@"\begin{flushright}");
                     }
                     else if (align == "center")
                     {
                         _tex.AddStartStyle(StyleEnum.ParaCenter);
-//                      _tex.AddText(@"\begin{center}");
                     }
                 }
             }
@@ -166,12 +164,10 @@ namespace docx2tex.Library
                     if (align == "right")
                     {
                         _tex.AddEndStyle(StyleEnum.ParaFlushRight);
-//                    _tex.AddText(@"\end{flushright}");
                     }
                     else if (align == "center")
                     {
                         _tex.AddEndStyle(StyleEnum.ParaCenter);
-//                    _tex.AddText(@"\end{center}");
                     }
                 }
             }

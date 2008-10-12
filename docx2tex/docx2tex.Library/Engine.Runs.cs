@@ -44,7 +44,7 @@ namespace docx2tex.Library
                 {
                     //math content
                     ProcessMath(GetNode(run, "./m:oMath"));
-                    _tex.AddTextNL(@"\\");
+                    _tex.AddTextNL(Config.Instance.LaTeXTags.Breaks.Line);
                 }
                 // math content
                 else if (run.Name == "m:oMath")
@@ -71,12 +71,12 @@ namespace docx2tex.Library
                     // page break
                     if (GetString(run, @"./w:br/@w:type") == "page")
                     {
-                        _tex.AddTextNL(@"\newpage");
+                        _tex.AddTextNL(Config.Instance.LaTeXTags.Breaks.Page);
                     }
                     else
                     {
                         // line break
-                        _tex.AddTextNL(@"\\");
+                        _tex.AddTextNL(Config.Instance.LaTeXTags.Breaks.Line);
                     }
                 }
                 // tab

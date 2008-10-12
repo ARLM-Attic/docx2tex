@@ -24,7 +24,7 @@ namespace docx2tex.Library
 
         static Store()
         {
-            LINELENGTH = Config.Instance.LineLength;
+            LINELENGTH = Config.Instance.Infra.LineLength.Value;
         }
 
         public Store(Styling stylingFn)

@@ -97,7 +97,7 @@ namespace docx2tex.Library
         private static void ConvertImageToEPS(string orginalImagePath, string newImagePath)
         {
             string epsImagePath = Path.ChangeExtension(newImagePath, "eps");
-            string imageMagickPath = Config.Instance.ImageMagickPath;
+            string imageMagickPath = Config.Instance.Infra.ImageMagickPath;
             
             if(string.IsNullOrEmpty(imageMagickPath))
             {

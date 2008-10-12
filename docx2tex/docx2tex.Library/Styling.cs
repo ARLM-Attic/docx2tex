@@ -103,27 +103,27 @@ namespace docx2tex.Library
             switch (styleEnum)
             {
                 case StyleEnum.TextIt:
-                    return @"\textit{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.TextIt;
                 case StyleEnum.TextBf:
-                    return @"\textbf{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.TextBf;
                 case StyleEnum.Underline:
-                    return @"\underline{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.Underline;
                 case StyleEnum.Sout:
-                    return @"\sout{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.Sout;
                 case StyleEnum.Xout:
-                    return @"\xout{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.Xout;
                 case StyleEnum.TextSc:
-                    return @"\textsc{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.TextSc;
                 case StyleEnum.TextC:
-                    return @"\textsc{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.TextC;
                 case StyleEnum.SuperScript:
-                    return @"$^{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.SuperScript;
                 case StyleEnum.SubScript:
-                    return @"$_{";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.SubScript;
                 case StyleEnum.ParaFlushRight:
-                    return @"\begin{flushright}";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.ParaFlushRight;
                 case StyleEnum.ParaCenter:
-                    return @"\begin{center}";
+                    return Config.Instance.LaTeXTags.StylePair.Begin.ParaCenter;
             }
             return string.Empty;
         }
@@ -134,27 +134,27 @@ namespace docx2tex.Library
             switch (styleEnum)
             {
                 case StyleEnum.TextIt:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.TextIt;
                 case StyleEnum.TextBf:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.TextBf;
                 case StyleEnum.Underline:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.Underline;
                 case StyleEnum.Sout:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.Sout;
                 case StyleEnum.Xout:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.Xout;
                 case StyleEnum.TextSc:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.TextSc;
                 case StyleEnum.TextC:
-                    return @"}";
+                    return Config.Instance.LaTeXTags.StylePair.End.TextC;
                 case StyleEnum.SuperScript:
-                    return @"}$";
+                    return Config.Instance.LaTeXTags.StylePair.End.SuperScript;
                 case StyleEnum.SubScript:
-                    return @"}$";
+                    return Config.Instance.LaTeXTags.StylePair.End.SubScript;
                 case StyleEnum.ParaFlushRight:
-                    return @"\end{flushright}";
+                    return Config.Instance.LaTeXTags.StylePair.End.ParaFlushRight;
                 case StyleEnum.ParaCenter:
-                    return @"\end{center}";
+                    return Config.Instance.LaTeXTags.StylePair.End.ParaCenter;
             }
             return string.Empty;
         }
