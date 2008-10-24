@@ -17,6 +17,7 @@ namespace docx2tex.Library
 
         private Styling _stylingFn;
         private List<Run> _runs;
+        private IStatusInformation _statusInfo;
 
         #endregion
 
@@ -27,10 +28,11 @@ namespace docx2tex.Library
             LINELENGTH = Config.Instance.Infra.LineLength.Value;
         }
 
-        public Store(Styling stylingFn)
+        public Store(Styling stylingFn, IStatusInformation statusInfo)
         {
             _stylingFn = stylingFn;
             _runs = new List<Run>();
+            _statusInfo = statusInfo;
         }
 
         #endregion
@@ -82,26 +84,26 @@ namespace docx2tex.Library
             var originalRuns = _runs;
             List<Run> simplifiedRuns;
 
-            Console.WriteLine("Removing unusable styles...");
+            _statusInfo.WriteLine("Removing unusable styles...");
             // run style killer
             // delete styles that suround some float
             originalRuns = RunStyleKillers(originalRuns);
 
-            Console.WriteLine("Removing empty styles...");
+            _statusInfo.WriteLine("Removing empty styles...");
             // kill style pairs that do not have content while there are any
             while (KillEmptyStyles(out simplifiedRuns, originalRuns))
             {
                 originalRuns = simplifiedRuns;
             }
 
-            Console.WriteLine("Compacting runs...");
+            _statusInfo.WriteLine("Compacting runs...");
             // simplify the runs as long as they can be simplified
             while (Simplify(out simplifiedRuns, originalRuns))
             {
                 originalRuns = simplifiedRuns;
             }
 
-            Console.WriteLine("Correcting line lengths...");
+            _statusInfo.WriteLine("Correcting line lengths...");
             // split the line lengths
             return CorrectLineLengths(simplifiedRuns);
         }

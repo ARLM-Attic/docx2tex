@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ConfigXml xmlns:xsi="http://kpocza.net/docx2tex" xmlns:xsd="http://kpocza.net/docx2tex">
+<Docx2TexConfig xmlns:xsi="http://kpocza.net/docx2tex" xmlns:xsd="http://kpocza.net/docx2tex">
   <Infra 
     ImageMagickPath="c:\Program Files\ImageMagick-6.4.2-Q16\convert.exe">
     <LineLength>72</LineLength>
@@ -21,7 +21,7 @@
         Sout="\sout{" 
         Xout="\xout{" 
         TextSc="\textsc{" 
-        TextC="\textsc{" 
+        TextC="\textc{" 
         SuperScript="$^{" 
         SubScript="$_{" 
         ParaFlushRight="\begin{flushright}" 
@@ -44,5 +44,5 @@
     Section="heading1" 
     SubSection="heading2" 
     SubSubSection="heading3" 
-    Verbatim="vebatim" />
-</ConfigXml>
+    Verbatim="verbatim" />
+</Docx2TexConfig>

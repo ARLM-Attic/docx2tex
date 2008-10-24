@@ -15,17 +15,20 @@ namespace docx2tex.Library
         private Styling _stylingFn;
         private Imaging _imagingFn;
         private TeXing _texingFn;
+        private IStatusInformation _statusInfo;
 
         /// <summary>
         /// Setup helpers and namespaces
         /// </summary>
         /// <param name="documentXmlStream"></param>
         /// <param name="dotnetFn"></param>
-        public Engine(Stream documentXmlStream, Numbering numberingFn, Styling stylingFn, Imaging imagingFn, TeXing texingFn)
+        public Engine(Stream documentXmlStream, Numbering numberingFn, Styling stylingFn, Imaging imagingFn, IStatusInformation statusInfo)
         {
+            _statusInfo = statusInfo;
             _doc = new XmlDocument();
             _doc.Load(documentXmlStream);
-            _tex = new Store(stylingFn);
+            _texingFn = new TeXing();
+            _tex = new Store(stylingFn, statusInfo);
 
             _nsmgr = new XmlNamespaceManager(_doc.NameTable);
             _nsmgr.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
@@ -39,7 +42,6 @@ namespace docx2tex.Library
             _numberingFn = numberingFn;
             _stylingFn = stylingFn;
             _imagingFn = imagingFn;
-            _texingFn = texingFn;
 
             InitMathTables();
         }
@@ -59,14 +61,14 @@ namespace docx2tex.Library
             {
                 MainProcessor(paragraphNode, false, true);
                 cnt++;
-                Console.Write("Processed: {0} percent\r", cnt * 100 / cntNodes);
+                _statusInfo.WriteCR(string.Format("Processed: {0} percent", cnt * 100 / cntNodes));
             }
 
             Footer();
-            Console.WriteLine("Generated temporary data structure.");
+            _statusInfo.WriteLine("Temporary data structure generated.");
 
             string tex = _tex.ConvertToString();
-            Console.WriteLine("done.");
+            _statusInfo.WriteLine("done.");
             return tex;
         }
 

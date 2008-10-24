@@ -33,7 +33,7 @@ namespace docx2tex.Library
                 string widthHeightStr = _imagingFn.GetWidthAndHeightFromStyle(GetInt(extentNode, "@cx"), GetInt(extentNode, "@cy"));
                 _tex.AddText(@"\includegraphics[" + widthHeightStr + "]{");
                 // convert and resolve new image path
-                _tex.AddTextNL(_imagingFn.ResolveImage(GetString(blipNode, "@r:embed")) + "}");
+                _tex.AddTextNL(_imagingFn.ResolveImage(GetString(blipNode, "@r:embed"), _statusInfo) + "}");
 
                 XmlNode captionP = blipNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.NextSibling;
                 // add caption
@@ -72,7 +72,7 @@ namespace docx2tex.Library
                 string widthHeightStr = _imagingFn.GetWidthAndHeightFromStyle(GetString(imageData.ParentNode, "@style"));
                 _tex.AddText(@"\includegraphics[" + widthHeightStr + "]{");
                 // convert and resolve new image path
-                _tex.AddTextNL(_imagingFn.ResolveImage(GetString(imageData, "@r:id")) + "}");
+                _tex.AddTextNL(_imagingFn.ResolveImage(GetString(imageData, "@r:id"), _statusInfo) + "}");
 
                 XmlNode captionP = imageData.ParentNode.ParentNode.ParentNode.ParentNode.NextSibling;
                 // add caption

@@ -53,47 +53,16 @@ namespace docx2tex.Library
         private void InitStylePairs()
         {
             _paraStylePairs = new Dictionary<string, string>();
-            _paraStylePairs.Add("section", "heading1");
-            _paraStylePairs.Add("subsection", "heading2");
-            _paraStylePairs.Add("subsubsection", "heading3");
-            _paraStylePairs.Add("verbatim", "verbatim");
-
-            string paraStylePairFile = Path.ChangeExtension(_inputDocxPath, "paraStylePairs");
-            if (File.Exists(paraStylePairFile))
-            {
-                LoadStylePairFile(paraStylePairFile, _paraStylePairs);
-            }
+            _paraStylePairs.Add("section", Config.Instance.StyleMap.Section);
+            _paraStylePairs.Add("subsection", Config.Instance.StyleMap.SubSection);
+            _paraStylePairs.Add("subsubsection", Config.Instance.StyleMap.SubSubSection);
+            _paraStylePairs.Add("verbatim", Config.Instance.StyleMap.Verbatim);
 
             _runStylePairs = new Dictionary<string, string>();
-            _runStylePairs.Add("section", "heading1");
-            _runStylePairs.Add("subsection", "heading2");
-            _runStylePairs.Add("subsubsection", "heading3");
-            _runStylePairs.Add("verbatim", "verbatim");
-
-            string runStylePairFile = Path.ChangeExtension(_inputDocxPath, "runStylePairs");
-            if (File.Exists(runStylePairFile))
-            {
-                LoadStylePairFile(runStylePairFile, _runStylePairs);
-            }
-        }
-
-        private static void LoadStylePairFile(string stylePairFile, Dictionary<string, string> stylePairs)
-        {
-            using (StreamReader sr = new StreamReader(stylePairFile))
-            {
-                Regex stylePairRegex = new Regex("^(?<Latex>.+?)\\=(?<Custom>.+)$", RegexOptions.Compiled);
-                string line = null;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    Match match = stylePairRegex.Match(line);
-                    if (match != null)
-                    {
-                        string latex = match.Groups["Latex"].Value.ToLower();
-                        string custom = match.Groups["Custom"].Value.ToLower();
-                        stylePairs[latex] = custom;
-                    }
-                }
-            }
+            _runStylePairs.Add("section", Config.Instance.StyleMap.Section);
+            _runStylePairs.Add("subsection", Config.Instance.StyleMap.SubSection);
+            _runStylePairs.Add("subsubsection", Config.Instance.StyleMap.SubSubSection);
+            _runStylePairs.Add("verbatim", Config.Instance.StyleMap.Verbatim);
         }
 
         #endregion

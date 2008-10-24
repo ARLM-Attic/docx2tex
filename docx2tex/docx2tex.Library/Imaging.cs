@@ -24,7 +24,7 @@ namespace docx2tex.Library
             _latexDirectory = Path.GetDirectoryName(outputLatexPath);
         }
 
-        public string ResolveImage(string imageId)
+        public string ResolveImage(string imageId, IStatusInformation statusInfo)
         {
             PackageRelationship rs = _docRelPart.GetRelationship(imageId);
 
@@ -48,7 +48,7 @@ namespace docx2tex.Library
                 }
             }
 
-            ConvertImageToEPS(orginalImagePath, newImagePath);
+            ConvertImageToEPS(orginalImagePath, newImagePath, statusInfo);
 
             return Path.ChangeExtension(imageUrl, "eps"); ;
         }
@@ -94,14 +94,14 @@ namespace docx2tex.Library
 
         #region Helper methods
 
-        private static void ConvertImageToEPS(string orginalImagePath, string newImagePath)
+        private static void ConvertImageToEPS(string orginalImagePath, string newImagePath, IStatusInformation statusInfo)
         {
             string epsImagePath = Path.ChangeExtension(newImagePath, "eps");
             string imageMagickPath = Config.Instance.Infra.ImageMagickPath;
             
             if(string.IsNullOrEmpty(imageMagickPath))
             {
-                Console.WriteLine("ERROR: Unable to read configuration setting of ImageMagicK's path");
+                statusInfo.WriteLine("ERROR: Unable to read configuration setting of ImageMagick's path");
                 return;
             }
             try
@@ -111,7 +111,7 @@ namespace docx2tex.Library
             }
             catch
             {
-                Console.WriteLine("ERROR: Unable to start ImageMagicK");
+                statusInfo.WriteLine("ERROR: Unable to start ImageMagicK");
             }
         }
 

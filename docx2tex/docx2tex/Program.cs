@@ -15,14 +15,16 @@ namespace docx2tex
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("docx2tex was created by Krisztian Pocza in 2007-2008 under the terms of BSD licence");
-            Console.WriteLine("info: kpocza@kpocza.net");
-            Console.WriteLine();
+            ConsoleOutput consoleOutput = new ConsoleOutput();
+
+            consoleOutput.WriteLine("docx2tex was created by Krisztian Pocza in 2007-2008 under the terms of the BSD licence");
+            consoleOutput.WriteLine("info: kpocza@kpocza.net");
+            consoleOutput.WriteLine();
 //            Console.ReadLine();
             if (args.Length < 2)
             {
-                Console.WriteLine("Usage:");
-                Console.WriteLine("docx2tex.exe source.docx dest.tex");
+                consoleOutput.WriteLine("Usage:");
+                consoleOutput.WriteLine("docx2tex.exe source.docx dest.tex");
                 return;
             }
 
@@ -31,7 +33,7 @@ namespace docx2tex
 
             StaticConfigHelper.DocxPath = inputDocxPath;
 
-            new Docx2TexWorker().Process(inputDocxPath, outputTexPath);
+            new Docx2TexWorker().Process(inputDocxPath, outputTexPath, consoleOutput);
 
             using (StreamReader sr = new StreamReader(outputTexPath))
             {

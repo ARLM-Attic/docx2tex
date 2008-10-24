@@ -8,9 +8,13 @@ namespace docx2tex.Library
 {
     public class Docx2TexWorker
     {
-        public void Process(string inputDocxPath, string outputTexPath)
+        public void Process(string inputDocxPath, string outputTexPath, IStatusInformation statusInfo)
         {
             string documentPath = Path.GetDirectoryName(outputTexPath);
+            if (documentPath == null)
+            {
+                documentPath = Path.GetPathRoot(outputTexPath);
+            }
 
             EnsureMediaPath(documentPath);
 
@@ -22,7 +26,7 @@ namespace docx2tex.Library
             catch (Exception ex)
             {
                 // this happens mostly when the user leaves the Word file open
-                Console.WriteLine(ex.Message);
+                statusInfo.WriteLine(ex.Message);
                 return;
             }
 
@@ -38,11 +42,10 @@ namespace docx2tex.Library
             Numbering numbering = new Numbering(numberingPart);
             Styling styling = new Styling(inputDocxPath);
             Imaging imaging = new Imaging(documentPart, inputDocxPath, outputTexPath);
-            TeXing texing = new TeXing();
 
             using (Stream documentXmlStream = documentPart.GetStream())
             {
-                Engine engine = new Engine(documentXmlStream, numbering, styling, imaging, texing);
+                Engine engine = new Engine(documentXmlStream, numbering, styling, imaging, statusInfo);
                 string outputString = engine.Process();
                 string latexSource = ReplaceSomeCharacters(outputString);
 

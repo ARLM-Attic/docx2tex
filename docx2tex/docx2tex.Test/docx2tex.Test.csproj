@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2CE07F8D-516D-45C8-9996-911123FA2920}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -74,7 +74,7 @@
     <None Include="Input\testcscs\regression-test-final2.docx" />
     <None Include="Input\testeq\eqtest.docx" />
     <None Include="Input\testmacs\MACS_SecDistr_draft.docx" />
-    <None Include="Input\testmacs\MACS_SecDistr_draft.paraStylePairs" />
+    <None Include="Input\testmacs\MACS_SecDistr_draft.docx2texConfig" />
     <None Include="Input\testtug\docx2tex.docx" />
     <None Include="Input\test\example.docx" />
     <None Include="Output\testcscs\l.ps1" />
