@@ -14,8 +14,13 @@ namespace docx2tex.Library
         private void ProcessTable(XmlNode tblNode)
         {
             int numberOfColumns = CountNodes(tblNode, @"./w:tblGrid/w:gridCol");
-            _tex.AddTextNL(@"\begin{table}[h]");
-            _tex.AddTextNL(@"\centering");
+
+            _tex.AddStartTag(TagEnum.Table);
+            _tex.AddTextNL("[" + Config.Instance.LaTeXTags.TablePlacement + "]");
+            if (Config.Instance.LaTeXTags.CenterTables.Value)
+            {
+                _tex.AddTextNL(@"\centering");
+            }
             _tex.AddText(@"\begin{tabular}{|");
             for (int i = 0; i < numberOfColumns; i++)
             {
@@ -51,14 +56,17 @@ namespace docx2tex.Library
             XmlNode captionP = tblNode.NextSibling;
             if (!string.IsNullOrEmpty(GetString(captionP, "./w:fldSimple[starts-with(@w:instr, ' SEQ Table ')]/@w:instr")))
             {
-                _tex.AddText(@"\caption{\label{table:");
-                _tex.AddText(GetString(captionP, @"./w:bookmarkStart/@w:name"));
-                _tex.AddText("}");
+                _tex.AddText(@"\caption{");
+                if (Config.Instance.LaTeXTags.PutTableReferences.HasValue)
+                {
+                    _tex.AddText(@"\label{table:" + GetString(captionP, @"./w:bookmarkStart/@w:name") + "}");
+                }
                 CaptionText(captionP);
                 _tex.AddTextNL("}");
             }
 
-            _tex.AddTextNL(@"\end{table}");
+            _tex.AddEndTag(TagEnum.Table);
+            _tex.AddNL();
         }
     }
 }

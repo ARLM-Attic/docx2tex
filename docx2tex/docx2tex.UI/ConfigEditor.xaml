@@ -13,6 +13,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <loc:TextBoxStringBindingConverter x:Key="tbSBC" />
     </UserControl.Resources>
     
     <DockPanel LastChildFill="True">
@@ -29,27 +30,69 @@
             <Button Name="btnCleanPage" DockPanel.Dock="Right" Margin="4" Width="96" Click="btnCleanPage_Click">Clean this Page</Button>
         </DockPanel>
         <TabControl Name="tcConfig">
-            <TabItem Header="Infrastructure" Name="tabInfra">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="95*" />
-                        <ColumnDefinition Width="5*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Grid.Row="0">
-                        <Label>ImageMagick's path:</Label>
-                        <DockPanel LastChildFill="True">
-                            <Button DockPanel.Dock="Right" Name="btnSelectImgMgck" Click="btnSelectImgMgck_Click">...</Button>
-                            <TextBox Text="{Binding Path=Infra.ImageMagickPath}"  Name="txtSelectImgMgck" />
-                        </DockPanel>
-                        
-                        <Label>Line length</Label>
-                        <TextBox PreviewTextInput="txtLineLength_PreviewTextInput" TextChanged="txtLineLength_TextChanged">
-                            <TextBox.Text>
-                                <Binding Path="Infra.LineLength" />
-                            </TextBox.Text>
-                        </TextBox>
-                    </StackPanel>
-                </Grid>
+            <TabItem Header="Infrastructure &amp; Features" Name="tabInfra">
+                <StackPanel>
+                    <GroupBox Header="Infrastructure">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="95*" />
+                                <ColumnDefinition Width="5*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Grid.Row="0">
+                                <Label>ImageMagick's path:</Label>
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock="Right" Name="btnSelectImgMgck" Click="btnSelectImgMgck_Click">...</Button>
+                                    <TextBox Text="{Binding Path=Infra.ImageMagickPath, Converter={StaticResource tbSBC}}"  Name="txtSelectImgMgck" />
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Grid.Row="0">
+                            <GroupBox Header="Figure features">
+                                <StackPanel>
+                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.CenterFigures}">Center figures</CheckBox>
+                                    <Label>Figure placement:</Label>
+                                    <TextBox Text="{Binding Path=LaTeXTags.FigurePlacement, Converter={StaticResource tbSBC}}" />
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Table features">
+                                <StackPanel>
+                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.CenterTables}">Center tables</CheckBox>
+                                    <Label>Table placement:</Label>
+                                    <TextBox Text="{Binding Path=LaTeXTags.TablePlacement, Converter={StaticResource tbSBC}}" />
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <GroupBox Header="References">
+                                <StackPanel>
+                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutFigureReferences}">Process figure cross references</CheckBox>
+                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutTableReferences}">Process table cross references</CheckBox>
+                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutSectionReferences}">Process section cross references</CheckBox>
+                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutListingReferences}">Process listing cross references</CheckBox>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Lists">
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.AllowContinuousLists}">Allow continuous numbered lists</CheckBox>
+                            </GroupBox>
+                            <GroupBox>
+                                <StackPanel>
+                                    <Label>Line length</Label>
+                                    <TextBox PreviewTextInput="txtLineLength_PreviewTextInput" TextChanged="txtLineLength_TextChanged">
+                                        <TextBox.Text>
+                                            <Binding Path="Infra.LineLength" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Latex Tags" Name="tabLtXTags">
                 <Grid>
@@ -61,24 +104,58 @@
                         <GroupBox Header="Main tags">
                             <StackPanel>
                                 <Label FontSize="16">section - Heading1</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.Section}" />
+                                <TextBox Text="{Binding Path=LaTeXTags.Section, Converter={StaticResource tbSBC}}" />
                                 <Label FontSize="15">subsection - Heading2</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.SubSection}" />
+                                <TextBox Text="{Binding Path=LaTeXTags.SubSection, Converter={StaticResource tbSBC}}" />
                                 <Label FontSize="14">subsubsection - Heading3</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.SubSubSection}" />
-                                <Label FontFamily="Lucida Console">Begin of verbatim text</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.BeginVerbatim}" />
-                                <Label FontFamily="Lucida Console">End of verbatim text</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.EndVerbatim}" />
+                                <TextBox Text="{Binding Path=LaTeXTags.SubSubSection, Converter={StaticResource tbSBC}}" />
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Header="Breaks">
-                            <StackPanel>
-                                <Label>Page break</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.Breaks.Page}" />
-                                <Label>Line break</Label>
-                                <TextBox Text="{Binding Path=LaTeXTags.Breaks.Line}" />
-                            </StackPanel>
+                        <GroupBox Header="Tag styles">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30*" />
+                                    <ColumnDefinition Width="35*" />
+                                    <ColumnDefinition Width="35*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center">Begin</Label>
+                                <Label Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center">End</Label>
+
+                                <Label Grid.Column="0" Grid.Row="1" FontFamily="Lucida Console">Verbatim</Label>
+                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LaTeXTags.TagPair.Begin.Verbatim, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=LaTeXTags.TagPair.End.Verbatim, Converter={StaticResource tbSBC}}" />
+
+                                <TextBlock Grid.Column="0" Grid.Row="2">
+                                    <Span>M<Span BaselineAlignment="Superscript">a</Span>t<Span BaselineAlignment="Superscript">h</Span></Span>
+                                </TextBlock>
+                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=LaTeXTags.TagPair.Begin.Math, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=LaTeXTags.TagPair.End.Math, Converter={StaticResource tbSBC}}" />
+
+                                <Label Grid.Column="0" Grid.Row="3">Figure</Label>
+                                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Path=LaTeXTags.TagPair.Begin.Figure, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=LaTeXTags.TagPair.End.Figure, Converter={StaticResource tbSBC}}" />
+
+                                <Label Grid.Column="0" Grid.Row="4">Enumerate</Label>
+                                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Path=LaTeXTags.TagPair.Begin.Enumerate, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding Path=LaTeXTags.TagPair.End.Enumerate, Converter={StaticResource tbSBC}}" />
+
+                                <Label Grid.Column="0" Grid.Row="5">Itemize</Label>
+                                <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Path=LaTeXTags.TagPair.Begin.Itemize, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding Path=LaTeXTags.TagPair.End.Itemize, Converter={StaticResource tbSBC}}" />
+
+                                <Label Grid.Column="0" Grid.Row="6">Table</Label>
+                                <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding Path=LaTeXTags.TagPair.Begin.Table, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="6" Text="{Binding Path=LaTeXTags.TagPair.End.Table, Converter={StaticResource tbSBC}}" />
+                            </Grid>
                         </GroupBox>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Grid.Row="0">
@@ -105,45 +182,45 @@
                                 <Label Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center">End</Label>
 
                                 <TextBlock Grid.Column="0" Grid.Row="1" FontStyle="Italic">Italic</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextIt}" />
-                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.End.TextIt}" />
+                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextIt, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.End.TextIt, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="2" FontWeight="Bold">Bold</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextBf}" />
-                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.End.TextBf}" />
+                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextBf, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.End.TextBf, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="3" TextDecorations="Underline">Underline</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Path=LaTeXTags.StylePair.Begin.Underline}" />
-                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=LaTeXTags.StylePair.End.Underline}" />
+                                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Path=LaTeXTags.StylePair.Begin.Underline, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=LaTeXTags.StylePair.End.Underline, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="4" TextDecorations="Strikethrough">Strike out</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Path=LaTeXTags.StylePair.Begin.Sout}" />
-                                <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding Path=LaTeXTags.StylePair.End.Sout}" />
+                                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Path=LaTeXTags.StylePair.Begin.Sout, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding Path=LaTeXTags.StylePair.End.Sout, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="5">dStrike out</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Path=LaTeXTags.StylePair.Begin.Xout}" />
-                                <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding Path=LaTeXTags.StylePair.End.Xout}" />
+                                <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Path=LaTeXTags.StylePair.Begin.Xout, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding Path=LaTeXTags.StylePair.End.Xout, Converter={StaticResource tbSBC}}" />
 
                                 
                                 <TextBlock Grid.Column="0" Grid.Row="6">Small Caps</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextSc}" />
-                                <TextBox Grid.Column="2" Grid.Row="6" Text="{Binding Path=LaTeXTags.StylePair.End.TextSc}" />
+                                <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextSc, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="6" Text="{Binding Path=LaTeXTags.StylePair.End.TextSc, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="7" Typography.Capitals="AllSmallCaps">All Caps</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextC}" />
-                                <TextBox Grid.Column="2" Grid.Row="7" Text="{Binding Path=LaTeXTags.StylePair.End.TextC}" />
+                                <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding Path=LaTeXTags.StylePair.Begin.TextC, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="7" Text="{Binding Path=LaTeXTags.StylePair.End.TextC, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="8">
                                     <Span>a<Span BaselineAlignment="Superscript">SuperScript</Span></Span>
                                 </TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding Path=LaTeXTags.StylePair.Begin.SuperScript}" />
-                                <TextBox Grid.Column="2" Grid.Row="8" Text="{Binding Path=LaTeXTags.StylePair.End.SuperScript}" />
+                                <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding Path=LaTeXTags.StylePair.Begin.SuperScript, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="8" Text="{Binding Path=LaTeXTags.StylePair.End.SuperScript, Converter={StaticResource tbSBC}}" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="9">
                                     <Span>a<Span BaselineAlignment="SubScript">SubScript</Span></Span>
                                 </TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="9" Text="{Binding Path=LaTeXTags.StylePair.Begin.SubScript}" />
-                                <TextBox Grid.Column="2" Grid.Row="9" Text="{Binding Path=LaTeXTags.StylePair.End.SubScript}" />
+                                <TextBox Grid.Column="1" Grid.Row="9" Text="{Binding Path=LaTeXTags.StylePair.Begin.SubScript, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="9" Text="{Binding Path=LaTeXTags.StylePair.End.SubScript, Converter={StaticResource tbSBC}}" />
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Paragraph styles">
@@ -162,13 +239,21 @@
                                 <Label Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center">End</Label>
 
                                 <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right">Flush Right</Label>
-                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.Begin.ParaFlushRight}" />
-                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.End.ParaFlushRight}" />
+                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.Begin.ParaFlushRight, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=LaTeXTags.StylePair.End.ParaFlushRight, Converter={StaticResource tbSBC}}" />
 
                                 <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center">Center</Label>
-                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.Begin.ParaCenter}" />
-                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.End.ParaCenter}" />
+                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.Begin.ParaCenter, Converter={StaticResource tbSBC}}" />
+                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=LaTeXTags.StylePair.End.ParaCenter, Converter={StaticResource tbSBC}}" />
                             </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Breaks">
+                            <StackPanel>
+                                <Label>Page break</Label>
+                                <TextBox Text="{Binding Path=LaTeXTags.Breaks.Page, Converter={StaticResource tbSBC}}" />
+                                <Label>Line break</Label>
+                                <TextBox Text="{Binding Path=LaTeXTags.Breaks.Line, Converter={StaticResource tbSBC}}" />
+                            </StackPanel>
                         </GroupBox>
                     </StackPanel>
                 </Grid>
@@ -179,19 +264,32 @@
                         <ColumnDefinition Width="50*" />
                         <ColumnDefinition Width="50*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Grid.Row="0">
-                        <Label FontSize="16">section - Heading1</Label>
-                        <TextBox Text="{Binding Path=StyleMap.Section}" />
+                    <GroupBox Header="Style mapping" Grid.Column="0" Grid.Row="0">
+                        <StackPanel>
+                            <Label FontSize="16">section - Heading1</Label>
+                            <TextBox Text="{Binding Path=StyleMap.Section, Converter={StaticResource tbSBC}}" />
 
-                        <Label FontSize="15">subsection - Heading2</Label>
-                        <TextBox Text="{Binding Path=StyleMap.SubSection}" />
+                            <Label FontSize="15">subsection - Heading2</Label>
+                            <TextBox Text="{Binding Path=StyleMap.SubSection, Converter={StaticResource tbSBC}}" />
 
-                        <Label FontSize="14">subsubsection - Heading3</Label>
-                        <TextBox Text="{Binding Path=StyleMap.SubSubSection}" />
+                            <Label FontSize="14">subsubsection - Heading3</Label>
+                            <TextBox Text="{Binding Path=StyleMap.SubSubSection, Converter={StaticResource tbSBC}}" />
 
-                        <Label FontFamily="Lucida Console">verbatim</Label>
-                        <TextBox Text="{Binding Path=StyleMap.Verbatim}" />
-                    </StackPanel>
+                            <Label FontFamily="Lucida Console">verbatim</Label>
+                            <TextBox Text="{Binding Path=StyleMap.Verbatim, Converter={StaticResource tbSBC}}" />
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Style mapping" Grid.Column="1" Grid.Row="0">
+                        <DockPanel LastChildFill="True">
+                            <Label DockPanel.Dock="Top">Sample Word 2007 document path:</Label>
+                            <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                                <Button DockPanel.Dock="Right" Name="btnStyleSelectWord2k7Doc" Click="btnStyleSelectWord2k7Doc_Click">...</Button>
+                                <TextBox Name="txtStyleSelectWord2k7Doc" IsReadOnly="True" />
+                            </DockPanel>
+
+                            <ListBox Name="lbStyles" Margin="4" />
+                        </DockPanel>
+                    </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>

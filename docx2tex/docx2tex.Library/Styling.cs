@@ -12,15 +12,13 @@ namespace docx2tex.Library
         
         private static Dictionary<string, string> _paraStylePairs;
         private static Dictionary<string, string> _runStylePairs;
-        private string _inputDocxPath;
 
         #endregion    
         
         #region Lifecycle methods
 
-        public Styling(string inputDocxPath)
+        public Styling()
         {
-            _inputDocxPath = inputDocxPath;
             InitStylePairs();
         }
 

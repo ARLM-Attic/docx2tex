@@ -15,7 +15,7 @@
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Margin="5">
             <DockPanel LastChildFill="True">
-                <Button DockPanel.Dock="Right" Width="26" Name="btnClose" Click="btnClose_Click">X</Button>
+                <Button DockPanel.Dock="Right" Width="22" Margin="2" Name="btnClose" Click="btnClose_Click">X</Button>
                 <Label>Source Word 2007 document path:</Label>
             </DockPanel>
             <DockPanel LastChildFill="True">

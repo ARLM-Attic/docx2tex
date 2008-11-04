@@ -40,12 +40,11 @@ namespace docx2tex.Library
             }
 
             Numbering numbering = new Numbering(numberingPart);
-            Styling styling = new Styling(inputDocxPath);
             Imaging imaging = new Imaging(documentPart, inputDocxPath, outputTexPath);
 
             using (Stream documentXmlStream = documentPart.GetStream())
             {
-                Engine engine = new Engine(documentXmlStream, numbering, styling, imaging, statusInfo);
+                Engine engine = new Engine(documentXmlStream, numbering, imaging, statusInfo);
                 string outputString = engine.Process();
                 string latexSource = ReplaceSomeCharacters(outputString);
 
@@ -54,6 +53,7 @@ namespace docx2tex.Library
                     outputTexStream.Write(latexSource);
                 }
             }
+            pkg.Close();
         }
 
         private static string ReplaceSomeCharacters(string latexSource)

@@ -16,6 +16,7 @@ namespace docx2tex.Library
         #region Fields
 
         private Styling _stylingFn;
+        private Taging _tagingFn;
         private List<Run> _runs;
         private IStatusInformation _statusInfo;
 
@@ -28,9 +29,10 @@ namespace docx2tex.Library
             LINELENGTH = Config.Instance.Infra.LineLength.Value;
         }
 
-        public Store(Styling stylingFn, IStatusInformation statusInfo)
+        public Store(Styling stylingFn, Taging tagingFn, IStatusInformation statusInfo)
         {
             _stylingFn = stylingFn;
+            _tagingFn = tagingFn;
             _runs = new List<Run>();
             _statusInfo = statusInfo;
         }
@@ -75,6 +77,16 @@ namespace docx2tex.Library
             _runs.Add(new StyleKillerRun());
         }
 
+        public void AddStartTag(TagEnum tagEnum)
+        {
+            _runs.Add(new TagStartRun(tagEnum, _tagingFn));
+        }
+
+        public void AddEndTag(TagEnum tagEnum)
+        {
+            _runs.Add(new TagEndRun(tagEnum, _tagingFn));
+        }
+
         #endregion
 
         #region Convert to "TeXString"
@@ -105,7 +117,7 @@ namespace docx2tex.Library
 
             _statusInfo.WriteLine("Correcting line lengths...");
             // split the line lengths
-            return CorrectLineLengths(simplifiedRuns);
+            return CompileOutputText(simplifiedRuns);
         }
 
         #endregion
@@ -143,10 +155,11 @@ namespace docx2tex.Library
                             effectiveCnt++;
                             if (effectiveCnt > 0)
                             {
-                                simplifiedRuns.RemoveAt(j);
+                                simplifiedRuns[j] = new NullRun();
+                                //simplifiedRuns.RemoveAt(j);
                                 effectiveCnt--;
                                 cnt--;
-                                i--;
+                                //i--;
                             }
                         }
                         else if (simplifiedRuns[j] is StyleEndRun)
@@ -168,10 +181,11 @@ namespace docx2tex.Library
                             effectiveCnt++;
                             if (effectiveCnt > 0)
                             {
-                                simplifiedRuns.RemoveAt(j);
+                                simplifiedRuns[j] = new NullRun();
+                                //simplifiedRuns.RemoveAt(j);
                                 effectiveCnt--;
                                 cnt--;
-                                j--;
+                                //j--;
                             }
                         }
                         else if (simplifiedRuns[j] is StyleStartRun)
@@ -204,9 +218,11 @@ namespace docx2tex.Library
                 if (run1 is StyleStartRun && run2 is StyleEndRun && 
                     (run1 as StyleRun).Style == (run2 as StyleRun).Style)
                 {
-                    simplifiedRuns.RemoveAt(i); //ith
-                    simplifiedRuns.RemoveAt(i); // i+1th
-                    i--;
+                    simplifiedRuns[i] = new NullRun();
+                    simplifiedRuns[i+1] = new NullRun();
+                    //simplifiedRuns.RemoveAt(i); //ith
+                    //simplifiedRuns.RemoveAt(i); // i+1th
+                    i++;
                     didKill = true;
                 }
             }
@@ -230,6 +246,18 @@ namespace docx2tex.Library
                 Run run = runEnum.Current;
                 // if newline or text
                 if (run is NewLineRun || run is TextRun || run is VerbatimRun)
+                {
+                    // if a style ending run found then flush it
+                    if (lastStyleEndRun != null)
+                    {
+                        simplifiedRuns.Add(lastStyleEndRun);
+                        lastStyleEndRun = null;
+                    }
+                    // add run
+                    simplifiedRuns.Add(run);
+                }
+                // if tag
+                if (run is TagRun)
                 {
                     // if a style ending run found then flush it
                     if (lastStyleEndRun != null)
@@ -289,9 +317,9 @@ namespace docx2tex.Library
 
 	    #endregion
 
-        #region Helper : CorrectLineLengths
+        #region Helper : CompileOutputText
 
-        private string CorrectLineLengths(List<Run> simplifiedRuns)
+        private string CompileOutputText(List<Run> simplifiedRuns)
         {
             StringBuilder sb = new StringBuilder();
             int lastLineLength = 0;
@@ -302,7 +330,7 @@ namespace docx2tex.Library
                 {
                     sb.Append(r.TeXText);
                 }
-                else if (r is TextRun || r is StyleStartRun || r is StyleEndRun)
+                else if (r is TextRun || r is StyleStartRun || r is StyleEndRun || r is TagRun)
                 {
                     string parts = r.TeXText;
                     lastLineLength = AddRun(sb, r.TeXText, lastLineLength);
@@ -359,6 +387,14 @@ namespace docx2tex.Library
 	abstract class Run
     {
         public abstract string TeXText { get; }
+    }
+
+    class NullRun : Run
+    {
+        public override string TeXText
+        {
+            get { return string.Empty; }
+        }
     }
 
     class TextRun : Run
@@ -445,6 +481,44 @@ namespace docx2tex.Library
         }
     }
 
+
+    abstract class TagRun : Run
+    {
+        public TagEnum Tag { get; private set; }
+        protected Taging _tagingFn;
+
+        public TagRun(TagEnum tag, Taging tagingFn)
+        {
+            this.Tag = tag;
+            this._tagingFn = tagingFn;
+        }
+    }
+
+    class TagStartRun : TagRun
+    {
+        public TagStartRun(TagEnum tag, Taging tagingFn)
+            : base(tag, tagingFn)
+        {
+        }
+
+        public override string TeXText
+        {
+            get { return _tagingFn.Enum2TextStart(this.Tag); }
+        }
+    }
+
+    class TagEndRun : TagRun
+    {
+        public TagEndRun(TagEnum tag, Taging tagingFn)
+            : base(tag, tagingFn)
+        {
+        }
+
+        public override string TeXText
+        {
+            get { return _tagingFn.Enum2TextEnd(this.Tag); }
+        }
+    }
 
 	#endregion
 }

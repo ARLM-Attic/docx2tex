@@ -7,9 +7,9 @@
   <LaTeXTags 
     Section="\section" 
     SubSection="\subsection" 
-    SubSubSection="\subsubsection" 
-    BeginVerbatim="\begin{verbatim}" 
-    EndVerbatim="\end{verbatim}">
+    SubSubSection="\subsubsection"
+    FigurePlacement="h"
+    TablePlacement="h" >
     <Breaks 
       Page="\newpage" 
       Line="\\" />
@@ -21,7 +21,7 @@
         Sout="\sout{" 
         Xout="\xout{" 
         TextSc="\textsc{" 
-        TextC="\textc{" 
+        TextC="\textsc{" 
         SuperScript="$^{" 
         SubScript="$_{" 
         ParaFlushRight="\begin{flushright}" 
@@ -39,6 +39,29 @@
         ParaFlushRight="\end{flushright}" 
         ParaCenter="\end{center}" />
     </StylePair>
+    <TagPair>
+      <Begin
+        Verbatim = "\begin{verbatim}"
+        Math = "$"
+        Figure = "\begin{figure}"
+        Enumerate = "\begin{enumerate}"
+        Itemize = "\begin{itemize}"
+        Table = "\begin{table}" />
+      <End 
+        Verbatim = "\end{verbatim}"
+        Math = "$"
+        Figure = "\end{figure}"
+        Enumerate = "\end{enumerate}"
+        Itemize = "\end{itemize}"
+        Table = "\end{table}" />
+    </TagPair>
+    <CenterFigures>true</CenterFigures>
+    <CenterTables>true</CenterTables>
+    <AllowContinuousLists>true</AllowContinuousLists>
+    <PutSectionReferences>true</PutSectionReferences>
+    <PutFigureReferences>true</PutFigureReferences>
+    <PutTableReferences>true</PutTableReferences>
+    <PutListingReferences>true</PutListingReferences>
   </LaTeXTags>
   <StyleMap 
     Section="heading1" 

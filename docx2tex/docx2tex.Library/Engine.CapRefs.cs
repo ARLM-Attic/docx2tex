@@ -28,22 +28,34 @@ namespace docx2tex.Library
                 refStyle == _stylingFn.ResolveParaStyle("subsection") ||
                 refStyle == _stylingFn.ResolveParaStyle("subsubsection"))
             {
-                _tex.AddText(@"\ref{section:" + bookmarkRefName + "}.");
+                if (Config.Instance.LaTeXTags.PutSectionReferences.Value)
+                {
+                    _tex.AddText(@"\ref{section:" + bookmarkRefName + "}.");
+                }
             }
             else if (!string.IsNullOrEmpty(seq))
             {
                 // do for tables, listings, figures
                 if (seq.Contains("SEQ Table"))
                 {
-                    _tex.AddText(@"\ref{table:" + bookmarkRefName + "}.");
+                    if (Config.Instance.LaTeXTags.PutTableReferences.Value)
+                    {
+                        _tex.AddText(@"\ref{table:" + bookmarkRefName + "}.");
+                    }
                 }
                 else if (seq.Contains("SEQ Listing"))
                 {
-                    _tex.AddText(@"\ref{listing:" + bookmarkRefName + "}.");
+                    if (Config.Instance.LaTeXTags.PutListingReferences.Value)
+                    {
+                        _tex.AddText(@"\ref{listing:" + bookmarkRefName + "}.");
+                    }
                 }
                 else if (seq.Contains("SEQ Fig"))
                 {
-                    _tex.AddText(@"\ref{figure:" + bookmarkRefName + "}.");
+                    if (Config.Instance.LaTeXTags.PutFigureReferences.Value)
+                    {
+                        _tex.AddText(@"\ref{figure:" + bookmarkRefName + "}.");
+                    }
                 }
                 else
                 {
@@ -61,7 +73,11 @@ namespace docx2tex.Library
             if (!string.IsNullOrEmpty(GetString(paraNode, "./w:fldSimple[starts-with(@w:instr, ' SEQ Listing ')]/@w:instr")))
             {
                 _tex.AddTextNL(@"\begin{figure}[h]");
-                _tex.AddText(@"\caption{\label{listing:" + GetString(paraNode, "./w:bookmarkStart/@w:name") + "}");
+                _tex.AddText(@"\caption{");
+                if (Config.Instance.LaTeXTags.PutListingReferences.Value)
+                {
+                    _tex.AddText(@"\label{listing:" + GetString(paraNode, "./w:bookmarkStart/@w:name") + "}");
+                }
                 CaptionText(paraNode);
                 _tex.AddTextNL("}");
                 _tex.AddTextNL(@"\end{figure}");
@@ -95,10 +111,13 @@ namespace docx2tex.Library
             if (!string.IsNullOrEmpty(GetString(captionP, "./w:fldSimple[starts-with(@w:instr, ' SEQ Figure ')]/@w:instr")))
             {
                 _tex.AddText(@"\caption{");
-                string refName = GetString(captionP, "./w:bookmarkStart/@w:name");
-                if (!string.IsNullOrEmpty(refName))
+                if (Config.Instance.LaTeXTags.PutFigureReferences.Value)
                 {
-                    _tex.AddText(@"\label{figure:" + refName + "}");
+                    string refName = GetString(captionP, "./w:bookmarkStart/@w:name");
+                    if (!string.IsNullOrEmpty(refName))
+                    {
+                        _tex.AddText(@"\label{figure:" + refName + "}");
+                    }
                 }
                 CaptionText(captionP);
                 _tex.AddTextNL("}");

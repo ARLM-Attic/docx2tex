@@ -21,14 +21,14 @@ namespace docx2tex.UI
     {
 
         #region Fields
-        
-        IContentClosable _contentClosable;
+
+        IRecentConversion _contentClosable;
 
         #endregion
 
         #region Lifecycle methods
-        
-        public Converter(IContentClosable contentClosable)
+
+        public Converter(IRecentConversion contentClosable)
         {
             _contentClosable = contentClosable;
             InitializeComponent();
@@ -59,6 +59,12 @@ namespace docx2tex.UI
         }
 
         #endregion
+
+        internal void SetParameters(string docxPath, string texPath)
+        {
+            txtSelectWord2k7Doc.Text = docxPath;
+            txtSelectLaTeXDoc.Text = texPath;
+        }
 
         #region Private operation methods
         
@@ -96,11 +102,12 @@ namespace docx2tex.UI
 
         private void StartConversion()
         {
+            var recentConversions = UserConfigHandler.GetRecentConversions();
+
             lblError.Content = string.Empty;
 
             string docxPath = txtSelectWord2k7Doc.Text;
             string texPath = txtSelectLaTeXDoc.Text;
-
 
             var statusInfo = new TextBoxOutput(txtScreen, scrLog);
             try
@@ -117,6 +124,16 @@ namespace docx2tex.UI
                 statusInfo.WriteLine(string.Empty);
 
                 docx2TexWorker.Process(docxPath, texPath, statusInfo);
+
+                recentConversions.RemoveAll(rce => rce.From == docxPath && rce.To == texPath);
+                recentConversions.Insert(0, new FromToElement
+                {
+                    Order = 0,
+                    From = docxPath,
+                    To = texPath
+                });
+                UserConfigHandler.UpdateRecentConversion(recentConversions);
+                _contentClosable.BuildRecentConversionMenus();
             }
             catch (Exception ex)
             {
@@ -128,7 +145,7 @@ namespace docx2tex.UI
                 statusInfo.WriteLine(string.Empty);
                 btnStartConversion.IsEnabled = true;
             }
-            statusInfo.Refresh();
+            statusInfo.Flush();
         }
 
         #endregion
@@ -200,7 +217,7 @@ namespace docx2tex.UI
                 }
             }
 
-            public void Refresh()
+            public void Flush()
             {
                 _lastRefresh = _lastRefresh.AddHours(-1.0);
                 EnsureText();

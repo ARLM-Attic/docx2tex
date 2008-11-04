@@ -70,6 +70,7 @@ namespace docx2tex.Library.Data
         {
             Breaks = new Breaks();
             StylePair = new StylePair();
+            TagPair = new TagPair();
         }
 
         public LaTeXTags(LaTeXTags system, LaTeXTags user, LaTeXTags document)
@@ -77,6 +78,7 @@ namespace docx2tex.Library.Data
         {
             Breaks = new Breaks(system.Breaks, user != null ? user.Breaks : null, document != null ? document.Breaks : null);
             StylePair = new StylePair(system.StylePair, user != null ? user.StylePair : null, document != null ? document.StylePair : null);
+            TagPair = new TagPair(system.TagPair, user != null ? user.TagPair : null, document != null ? document.TagPair : null);
         }
 
         /// <summary>
@@ -101,20 +103,6 @@ namespace docx2tex.Library.Data
         public string SubSubSection { get; set; }
 
         /// <summary>
-        /// Begin of verbatim text
-        /// </summary>
-        [XmlAttribute]
-        [Docx2TexAutoConfig]
-        public string BeginVerbatim { get; set; }
-
-        /// <summary>
-        /// End of verbatim text
-        /// </summary>
-        [XmlAttribute]
-        [Docx2TexAutoConfig]
-        public string EndVerbatim { get; set; }
-
-        /// <summary>
         /// Breaks
         /// </summary>
         public Breaks Breaks { get; set; }
@@ -123,6 +111,67 @@ namespace docx2tex.Library.Data
         /// Styles
         /// </summary>
         public StylePair StylePair { get; set; }
+
+        /// <summary>
+        /// Tags
+        /// </summary>
+        public TagPair TagPair { get; set; }
+
+        /// <summary>
+        /// Center figures
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? CenterFigures { get; set; }
+
+        /// <summary>
+        /// Placement of figure
+        /// </summary>
+        [Docx2TexAutoConfig]
+        [XmlAttribute]
+        public string FigurePlacement { get; set; }
+
+        /// <summary>
+        /// Center tables
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? CenterTables { get; set; }
+
+        /// <summary>
+        /// Placement of table
+        /// </summary>
+        [Docx2TexAutoConfig]
+        [XmlAttribute]
+        public string TablePlacement { get; set; }
+
+        /// <summary>
+        /// Allow continuous lists
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? AllowContinuousLists { get; set; }
+
+        /// <summary>
+        /// Put figure cross-references
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? PutFigureReferences { get; set; }
+
+        /// <summary>
+        /// Put table cross-references
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? PutTableReferences { get; set; }
+
+        /// <summary>
+        /// Put section cross-references
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? PutSectionReferences { get; set; }
+
+        /// <summary>
+        /// Put listing cross-references
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? PutListingReferences { get; set; }
     }
 
     /// <summary>
@@ -317,6 +366,94 @@ namespace docx2tex.Library.Data
         [XmlAttribute]
         [Docx2TexAutoConfig]
         public string Verbatim { get; set; }
+    }
+
+
+    /// <summary>
+    /// Pair of begin and end tags
+    /// </summary>
+    sealed public class TagPair : Docx2TexAutoConfig
+    {
+        public TagPair ()
+        {
+            Begin = new Tag();
+            End = new Tag();
+        }
+
+        public TagPair(TagPair system, TagPair user, TagPair document)
+            : base(system, user, document)
+        {
+            Begin = new Tag(system.Begin, user != null ? user.Begin : null, document != null ? document.Begin : null);
+            End = new Tag(system.End, user != null ? user.End : null, document != null ? document.End : null);
+        }
+
+        /// <summary>
+        /// Begin tags
+        /// </summary>
+        public Tag Begin { get; set; }
+        /// <summary>
+        /// End tags
+        /// </summary>
+        public Tag End { get; set; }
+    }
+
+
+    /// <summary>
+    /// Tag info
+    /// </summary>
+    sealed public class Tag : Docx2TexAutoConfig
+    {
+        public Tag()
+        {
+        }
+
+        public Tag(Tag system, Tag user, Tag document)
+            : base(system, user, document)
+        {
+
+        }
+
+        /// <summary>
+        /// Verbatim
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string Verbatim { get; set; }
+
+        /// <summary>
+        /// Math
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string Math { get; set; }
+
+        /// <summary>
+        /// Figure
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string Figure { get; set; }
+
+        /// <summary>
+        /// Enumerate
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string Enumerate { get; set; }
+
+        /// <summary>
+        /// Itemize
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string Itemize { get; set; }
+
+        /// <summary>
+        /// Table
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string Table { get; set; }
     }
 
     /// <summary>

@@ -44,24 +44,34 @@ namespace docx2tex.Library
                     {
                         // simple numbered begins
                         case NumberedCounterTypeEnum.None:
-                            _tex.AddTextNL(@"\begin{enumerate}");
+                            _tex.AddStartTag(TagEnum.Enumerate);
+                            _tex.AddNL();
                             break;
                         // a new numbered begins
                         case NumberedCounterTypeEnum.NewCounter:
-                            _tex.AddTextNL(@"\newcounter{numberedCnt" + listBegin.Numbering + "}");
-                            _tex.AddTextNL(@"\begin{enumerate}");
+                            if (Config.Instance.LaTeXTags.AllowContinuousLists.Value)
+                            {
+                                _tex.AddTextNL(@"\newcounter{numberedCnt" + listBegin.Numbering + "}");
+                            }
+                            _tex.AddStartTag(TagEnum.Enumerate);
+                            _tex.AddNL();
                             break;
                         // a numbered loaded
                         case NumberedCounterTypeEnum.LoadCounter:
-                            _tex.AddTextNL(@"\begin{enumerate}");
-                            _tex.AddTextNL(@"\setcounter{enumi}{\thenumberedCnt" + listBegin.Numbering + "}");
+                            _tex.AddStartTag(TagEnum.Enumerate);
+                            _tex.AddNL();
+                            if (Config.Instance.LaTeXTags.AllowContinuousLists.Value)
+                            {
+                                _tex.AddTextNL(@"\setcounter{enumi}{\thenumberedCnt" + listBegin.Numbering + "}");
+                            }
                             break;
                     }
                 }
                 else if (listBegin.ListType == ListTypeEnum.Bulleted)
                 {
                     // bulleted list begins
-                    _tex.AddTextNL(@"\begin{itemize}");
+                    _tex.AddStartTag(TagEnum.Itemize);
+                    _tex.AddNL();
                 }
 
                 //list item
@@ -85,14 +95,19 @@ namespace docx2tex.Library
                         // save counter of next use
                         if (token.NumberedCounterType == NumberedCounterTypeEnum.SaveCounter)
                         {
-                            _tex.AddTextNL("\\setcounter{numberedCnt" + token.Numbering + "}{\\theenumi}");
+                            if (Config.Instance.LaTeXTags.AllowContinuousLists.Value)
+                            {
+                                _tex.AddTextNL("\\setcounter{numberedCnt" + token.Numbering + "}{\\theenumi}");
+                            }
                         }
-                        _tex.AddTextNL(@"\end{enumerate}");
+                        _tex.AddEndTag(TagEnum.Enumerate);
+                        _tex.AddNL();
                     }
                     else if (token.ListType == ListTypeEnum.Bulleted)
                     {
                         // bulleted ended
-                        _tex.AddTextNL(@"\end{itemize}");
+                        _tex.AddEndTag(TagEnum.Itemize);
+                        _tex.AddNL();
                     }
                 }
             }
@@ -134,11 +149,15 @@ namespace docx2tex.Library
                 ParagraphRuns(paraNode, false, false);
                 _tex.AddText("}");
 
-                // put the reference name
-                if (CountNodes(paraNode, "w:bookmarkStart") > 0)
+                if (Config.Instance.LaTeXTags.PutSectionReferences.Value)
                 {
-                    _tex.AddText(@"\label{section:" + GetString(paraNode, "./w:bookmarkStart/@w:name") + "}");
+                    // put the reference name
+                    if (CountNodes(paraNode, "w:bookmarkStart") > 0)
+                    {
+                        _tex.AddText(@"\label{section:" + GetString(paraNode, "./w:bookmarkStart/@w:name") + "}");
+                    }
                 }
+
                 _tex.AddNL();
             }
             else if (paraStyle == _stylingFn.ResolveParaStyle("verbatim"))
@@ -156,7 +175,7 @@ namespace docx2tex.Library
                 // the first verbatim is begining
                 if (!wasVerbatim)
                 {
-                    _tex.AddText(Config.Instance.LaTeXTags.BeginVerbatim);
+                    _tex.AddStartTag(TagEnum.Verbatim);
                 }
                 _tex.AddNL();
                 // content
@@ -165,7 +184,8 @@ namespace docx2tex.Library
                 if (!willVerbatim)
                 {
                     _tex.AddNL();
-                    _tex.AddTextNL(Config.Instance.LaTeXTags.EndVerbatim);
+                    _tex.AddEndTag(TagEnum.Verbatim);
+                    _tex.AddNL();
                 }
             }
             else if (CountNodes(paraNode, @"./w:fldSimple[starts-with(@w:instr, ' SEQ ')]") > 0)

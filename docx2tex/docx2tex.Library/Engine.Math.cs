@@ -24,12 +24,12 @@ namespace docx2tex.Library
         private void ProcessMath(XmlNode mathNode)
         {
             // begin math
-            _tex.AddText("$");
+            _tex.AddStartTag(TagEnum.Math);
 
             ProcessMathNodes(GetNodes(mathNode, "./*"));
 
             // end math
-            _tex.AddText("$");
+            _tex.AddEndTag(TagEnum.Math);
         }
 
         private void ProcessMathNodes(XmlNodeList xmlNodeList)

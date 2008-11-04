@@ -13,6 +13,7 @@ namespace docx2tex.Library
         private XmlNamespaceManager _nsmgr;
         private Numbering _numberingFn;
         private Styling _stylingFn;
+        private Taging _tagingFn;
         private Imaging _imagingFn;
         private TeXing _texingFn;
         private IStatusInformation _statusInfo;
@@ -22,13 +23,15 @@ namespace docx2tex.Library
         /// </summary>
         /// <param name="documentXmlStream"></param>
         /// <param name="dotnetFn"></param>
-        public Engine(Stream documentXmlStream, Numbering numberingFn, Styling stylingFn, Imaging imagingFn, IStatusInformation statusInfo)
+        public Engine(Stream documentXmlStream, Numbering numberingFn, Imaging imagingFn, IStatusInformation statusInfo)
         {
             _statusInfo = statusInfo;
             _doc = new XmlDocument();
             _doc.Load(documentXmlStream);
             _texingFn = new TeXing();
-            _tex = new Store(stylingFn, statusInfo);
+            var stylingFn = new Styling();
+            var tagingFn = new Taging();
+            _tex = new Store(stylingFn, tagingFn, statusInfo);
 
             _nsmgr = new XmlNamespaceManager(_doc.NameTable);
             _nsmgr.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");

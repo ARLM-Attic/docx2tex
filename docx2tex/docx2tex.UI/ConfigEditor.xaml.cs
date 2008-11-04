@@ -47,6 +47,7 @@ namespace docx2tex.UI
 
         private void ConfigEditor_Loaded(object sender, RoutedEventArgs e)
         {
+            
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
@@ -109,6 +110,11 @@ namespace docx2tex.UI
             {
                 _contentClosable.ContentClose();
             }
+        }
+
+        private void btnStyleSelectWord2k7Doc_Click(object sender, RoutedEventArgs e)
+        {
+            StyleSelectWord2K7Doc();
         }
 
         #endregion
@@ -228,6 +234,9 @@ namespace docx2tex.UI
                     StaticConfigHelper.DocxPath = _documentFilePath;
                     config = Config.LoadDocumentConfig();
                     txtConfigLevel.Text = "Document level configuration";
+                    txtStyleSelectWord2k7Doc.Text = _documentFilePath;
+                    EnumerateSyles();
+
                     break;
             }
             txtConfigLevelInfo.Text = config.ConfigurationFilePath;
@@ -250,6 +259,30 @@ namespace docx2tex.UI
         private bool ConfirmClickSave()
         {
             return MessageBox.Show("All modifications will be persisted. Are you sure?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+
+        private void StyleSelectWord2K7Doc()
+        {
+            using (var ofd = new System.Windows.Forms.OpenFileDialog())
+            {
+                ofd.Multiselect = false;
+                ofd.CheckFileExists = true;
+                ofd.CheckPathExists = true;
+                ofd.DereferenceLinks = true;
+                ofd.Filter = "Word 2007 documents (*.docx;*.docm)|*.docx;*.docm";
+                if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    txtStyleSelectWord2k7Doc.Text = ofd.FileName;
+                    EnumerateSyles();
+                }
+            }
+        }
+
+        private void EnumerateSyles()
+        {
+            var styles = StyleEnumerator.Enumerate(txtStyleSelectWord2k7Doc.Text);
+            lbStyles.Items.Clear();
+            styles.ForEach(s => lbStyles.Items.Add(s));
         }
 
 	    #endregion    

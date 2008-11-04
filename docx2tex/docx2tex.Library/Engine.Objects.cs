@@ -24,8 +24,12 @@ namespace docx2tex.Library
                 if (!inTable)
                 {
                     // put as figure
-                    _tex.AddTextNL(@"\begin{figure}[h]");
-                    _tex.AddTextNL(@"\centering");
+                    _tex.AddStartTag(TagEnum.Figure);
+                    _tex.AddTextNL("[" + Config.Instance.LaTeXTags.FigurePlacement + "]");
+                    if (Config.Instance.LaTeXTags.CenterFigures.Value)
+                    {
+                        _tex.AddTextNL(@"\centering");
+                    }
                 }
 
                 // apply width and height
@@ -42,7 +46,8 @@ namespace docx2tex.Library
                 // if we are in a table then no \end{figure} allowed
                 if (!inTable)
                 {
-                    _tex.AddTextNL(@"\end{figure}");
+                    _tex.AddEndTag(TagEnum.Figure);
+                    _tex.AddNL();
                 }
             }
         }
@@ -64,8 +69,12 @@ namespace docx2tex.Library
                 if (!inTable)
                 {
                     // put as figure
-                    _tex.AddTextNL(@"\begin{figure}[h]");
-                    _tex.AddTextNL(@"\centering");
+                    _tex.AddStartTag(TagEnum.Figure);
+                    _tex.AddTextNL("[" + Config.Instance.LaTeXTags.FigurePlacement + "]");
+                    if (Config.Instance.LaTeXTags.CenterFigures.Value)
+                    {
+                        _tex.AddTextNL(@"\centering");
+                    }
                 }
 
                 // apply width and height
@@ -81,7 +90,8 @@ namespace docx2tex.Library
                 // if we are in a table then no \end{figure} allowed
                 if (!inTable)
                 {
-                    _tex.AddTextNL(@"\end{figure}");
+                    _tex.AddEndTag(TagEnum.Figure);
+                    _tex.AddNL();
                 }
             }
         }
