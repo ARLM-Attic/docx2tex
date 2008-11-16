@@ -22,15 +22,26 @@ namespace docx2tex.Library
             bool isList = currentNumId.HasValue && currentLevel.HasValue;
             ListTypeEnum currentType = _numberingFn.GetNumberingStyle(currentNumId, currentLevel);
 
-            // list settings of the previous paragraph
-            int? prevNumId = GetInt(prevNode, "./w:pPr/w:numPr/w:numId/@w:val");
-            int? prevLevel = GetInt(prevNode, "./w:pPr/w:numPr/w:ilvl/@w:val");
-            ListTypeEnum prevType = _numberingFn.GetNumberingStyle(prevNumId, prevLevel);
+            int? prevNumId = null;
+            int? prevLevel = null;
+            ListTypeEnum prevType = ListTypeEnum.None;
+            int? nextNumId = null;
+            int? nextLevel = null;
+            ListTypeEnum nextType = ListTypeEnum.None;
 
-            // list settings of the next paragraph
-            int? nextNumId = GetInt(nextNode, "./w:pPr/w:numPr/w:numId/@w:val");
-            int? nextLevel = GetInt(nextNode, "./w:pPr/w:numPr/w:ilvl/@w:val");
-            ListTypeEnum nextType = _numberingFn.GetNumberingStyle(nextNumId, nextLevel);
+            // process list data if we are in a list
+            if (isList)
+            {
+                // list settings of the previous paragraph
+                prevNumId = GetInt(prevNode, "./w:pPr/w:numPr/w:numId/@w:val");
+                prevLevel = GetInt(prevNode, "./w:pPr/w:numPr/w:ilvl/@w:val");
+                prevType = _numberingFn.GetNumberingStyle(prevNumId, prevLevel);
+
+                // list settings of the next paragraph
+                nextNumId = GetInt(nextNode, "./w:pPr/w:numPr/w:numId/@w:val");
+                nextLevel = GetInt(nextNode, "./w:pPr/w:numPr/w:ilvl/@w:val");
+                nextType = _numberingFn.GetNumberingStyle(nextNumId, nextLevel);
+            }
 
             // if it is a list
             if (isList)
@@ -113,6 +124,19 @@ namespace docx2tex.Library
             }
         }
 
+        private string RESOLVED_SECTION = string.Empty;
+        private string RESOLVED_SUBSECTION = string.Empty;
+        private string RESOLVED_SUBSUBSECTION = string.Empty;
+        private string RESOLVED_VERBATIM = string.Empty;
+
+        private void CacheResolvedStyles()
+        {
+            RESOLVED_SECTION = _stylingFn.ResolveParaStyle("section");
+            RESOLVED_SUBSECTION = _stylingFn.ResolveParaStyle("subsection");
+            RESOLVED_SUBSUBSECTION = _stylingFn.ResolveParaStyle("subsubsection");
+            RESOLVED_VERBATIM = _stylingFn.ResolveParaStyle("verbatim");
+        }
+
         /// <summary>
         /// Process the paragraph's real content
         /// </summary>
@@ -127,20 +151,20 @@ namespace docx2tex.Library
             string paraStyle = GetLowerString(paraNode, @"./w:pPr/w:pStyle/@w:val");
 
             // if a heading found then process it
-            if (paraStyle == _stylingFn.ResolveParaStyle("section") ||
-                paraStyle == _stylingFn.ResolveParaStyle("subsection") ||
-                paraStyle == _stylingFn.ResolveParaStyle("subsubsection"))
+            if (paraStyle == RESOLVED_SECTION ||
+                paraStyle == RESOLVED_SUBSECTION ||
+                paraStyle == RESOLVED_SUBSUBSECTION)
             {
                 // put sections
-                if (paraStyle == _stylingFn.ResolveParaStyle("section"))
+                if (paraStyle == RESOLVED_SECTION)
                 {
                     _tex.AddText(Config.Instance.LaTeXTags.Section + "{");
                 }
-                else if (paraStyle == _stylingFn.ResolveParaStyle("subsection"))
+                else if (paraStyle == RESOLVED_SUBSECTION)
                 {
                     _tex.AddText(Config.Instance.LaTeXTags.SubSection + "{");
                 }
-                else if (paraStyle == _stylingFn.ResolveParaStyle("subsubsection"))
+                else if (paraStyle == RESOLVED_SUBSUBSECTION)
                 {
                     _tex.AddText(Config.Instance.LaTeXTags.SubSubSection + "{");
                 }
@@ -160,7 +184,7 @@ namespace docx2tex.Library
 
                 _tex.AddNL();
             }
-            else if (paraStyle == _stylingFn.ResolveParaStyle("verbatim"))
+            else if (paraStyle == RESOLVED_VERBATIM)
             {
                 // if verbatim node found
 
@@ -168,9 +192,9 @@ namespace docx2tex.Library
                 string nextParaStyle = GetLowerString(nextNode, "./w:pPr/w:pStyle/@w:val");
 
                 // the previous was also verbatim
-                bool wasVerbatim = prevParaStyle == _stylingFn.ResolveParaStyle("verbatim");
+                bool wasVerbatim = prevParaStyle == RESOLVED_VERBATIM;
                 // the next will be also verbatim
-                bool willVerbatim = nextParaStyle == _stylingFn.ResolveParaStyle("verbatim");
+                bool willVerbatim = nextParaStyle == RESOLVED_VERBATIM;
 
                 // the first verbatim is begining
                 if (!wasVerbatim)

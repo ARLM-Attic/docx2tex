@@ -30,18 +30,13 @@ namespace docx2tex.Library
             _tex.AddTextNL(@"\hline");
 
             //rows
-            foreach (XmlNode tr in GetNodes(tblNode, "w:tr"))
+            foreach (XmlNode tr in GetNodes(tblNode, "./w:tr"))
             {
                 //columns
-                foreach (XmlNode tc in GetNodes(tr, "w:tc"))
+                foreach (XmlNode tc in GetNodes(tr, "./w:tc"))
                 {
                     BulkMainProcessor(tc, true, false);
-                    ////content
-                    //foreach (XmlNode tcPara in GetNodes(tc, "w:p"))
-                    //{
-                    //    BulkMainProcessor(XmlNode par)
-                    //    ParagraphRuns(tcPara, true, false);
-                    //}
+
                     if (tc.NextSibling != null)
                     {
                         _tex.AddText(" & ");

@@ -1,4 +1,4 @@
-\documentclass[12pt, a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 \usepackage[latin2]{inputenc}
 \usepackage{graphicx}
 \usepackage{ulem}
@@ -9,8 +9,8 @@ docx2tex
 Krisztián Pócza, Mihály Biczó, Zoltán Porkoláb
 
 Eötvös Loránd University, Faculty of Informatics, Department of 
-Programming Languages and Compilers, Pázmány Péter sétány 1/C. 
-H-1117, Budapest, Hungary 
+Programming Languages and Compilers, Pázmány Péter sétány 1/C. H-1117, 
+Budapest, Hungary 
 
 kpocza@kpocza.net, mihaly.biczo@t-online.hu, gsd@elte.hu 
 
@@ -39,8 +39,8 @@ Each of them has its own advantages and disadvantages therefore each of
 them has many use cases where one is better than the other and vice 
 versa.
 
-WYSIWYG $[$1$]$ is the acronym for the term \textit{What You See Is W
-hat You Get} that originates from the late '70. WYSIWYG editors are 
+WYSIWYG $[$1$]$ is the acronym for the term \textit{What You See Is 
+What You Get} that originates from the late '70. WYSIWYG editors are 
 mostly used by everyday computer users whose aim is to produce good 
 looking documents fast and exploit the rich formatting capabilities of 
 such systems. WYSIWYG editors and word processors ensure that the 
@@ -48,9 +48,9 @@ printed version of the document will be the same as the document that is
 visible on the screen during editing. The first WYSIWYG word processor 
 called Bravo was created at Xerox by Charles Simonyi, who was the 
 inventor of intentional programming. In 1981 Simonyi left Xerox and 
-joined Microsoft where he created Microsoft Word $[$2, 3$]$, the 
-first and to this day the most popular word processor. Word is capable 
-to produce simple and also complex documents even with a lot of 
+joined Microsoft where he created Microsoft Word $[$2, 3$]$, the first 
+and to this day the most popular word processor. Word is capable to 
+produce simple and also complex documents even with a lot of 
 mathematical symbols. The other important feature of Word is \textit{
 Track Changes} that supports team work where any of the team members 
 can modify the document while these modifications are tracked and can be 
@@ -64,21 +64,21 @@ aim of typesetting systems is to create high quality output of materials
 that may contain complex mathematical formulae and complex figures. 
 Similarly, electronic typesetting systems follow this goal and produce 
 high quality, device independent output. The most popular typesetting 
-system is TeX $[$4$]$ created by Donald E. Knuth. TeX is mainly used 
-by researchers and by individuals whose aim is to achieve the best 
-quality printout and platform or device independence. The users of TeX 
-use a special and extensible DSL (Domain Specific Language) that was 
-designed to solve complex typesetting problems or even produce books 
-containing hundreds of pages.
+system is TeX $[$4$]$ created by Donald E. Knuth. TeX is mainly used by 
+researchers and by individuals whose aim is to achieve the best quality 
+printout and platform or device independence. The users of TeX use a 
+special and extensible DSL (Domain Specific Language) that was designed 
+to solve complex typesetting problems or even produce books containing 
+hundreds of pages.
 
 There is a big gap between these systems because each tries to satisfy 
 different demands, which are: produce common documents fast even in 
 teamwork vs. achieve the best quality and typographically correct 
 printout. To converge them there are some commercial and non-commercial 
 tools that support conversion from Word or other WHYSIWYG formats to TeX 
-(and back). The first direction, converting from WHYSIWYG (Word) 
-formats to TeX, has more reason for existence because many users edit 
-the original text in Word for the sake of simplicity and efficiency, and 
+(and back). The first direction, converting from WHYSIWYG (Word) formats 
+to TeX, has more reason for existence because many users edit the 
+original text in Word for the sake of simplicity and efficiency, and 
 later convert it to TeX by hand in order to ensure quality 
 
 The problems with present applications supporting this scenario are the 
@@ -89,8 +89,8 @@ following:
 \item Many of them are available only as commercial tools
 \item They have limitations (running times or page limit) when not 
 purchased 
-\item Support only the old, binary Word or Rich Text document format (
-.doc, .rtf)
+\item Support only the old, binary Word or Rich Text document format 
+(.doc, .rtf)
 \item Use the COM API of Word to process documents that makes them 
 complex
 \setcounter{numberedCntB}{\theenumi}
@@ -105,10 +105,10 @@ presented along with further development directions.
 It has been also a big challenge to convert proprietary, binary or 
 simply other document formats to TeX. Because Word is the most common 
 editor therefore most of the tools convert from Word documents. One of 
-these tools is \textit{Word2TeX} $[$5$]$, that makes Word capable 
-to save documents in TeX format. This tool is embedded into Word, has an 
-evaluation period and can be purchased in different license packages. 
-A similarly featured tool called \textit{Word-to-Latex} $[$6$]$ is 
+these tools is \textit{Word2TeX} $[$5$]$, that makes Word capable to 
+save documents in TeX format. This tool is embedded into Word, has an 
+evaluation period and can be purchased in different license packages. A 
+similarly featured tool called \textit{Word-to-Latex} $[$6$]$ is 
 closed source and free software. 
 
 There is a possibility to use OpenOffice.org $[$7$]$ that is capable of 
@@ -127,10 +127,10 @@ The used technologies are the following:
 
 \newcounter{numberedCntC}
 \begin{enumerate}
-\item Office Open XML (ECMA 376 Standard $[$9$]$, recently approved 
-as an ISO Standard), the default format of Word 2007. Shortly: OOXML.
-\item Microsoft .NET 3.0 (CLI is ECMA 335 Standard $[$10$]$ and 
-ISO/IEC 23271:2006 Standard $[$11$]$)
+\item Office Open XML (ECMA 376 Standard $[$9$]$, recently approved as 
+an ISO Standard), the default format of Word 2007. Shortly: OOXML.
+\item Microsoft .NET 3.0 (CLI is ECMA 335 Standard $[$10$]$ and ISO/IEC 
+23271:2006 Standard $[$11$]$)
 \item ImageMagick $[$12$]$ to convert images 
 \setcounter{numberedCntC}{\theenumi}
 \end{enumerate}
@@ -140,21 +140,19 @@ documents. Microsoft .NET 3.0 has some special classes in the \textit{
 System.IO.Packaging} namespace that facilitate opening and unzipping 
 OOXML files and abstract the contained XML and media files as packages. 
 The operations performed by this component are described by the object 
-line called \textit{OOXML depackaging} in \ref{figure:_Ref194044987}.
-.
+line called \textit{OOXML depackaging} in \ref{figure:_Ref194044987}..
 
-The most important component of docx2tex is the \textit{Core XML 
-Engine} that implements the base foundations of conversation from XML 
-files to TeX. The Core Engine is responsible for reading and processing 
-the XML data of the OOXML documents that is served by the OOXML 
-depackaging component. The Core Engine identifies parts of the OOXML 
-document and processes the contents of these parts (paragraphs, runs, 
-tables, image references, numberings, \ldots ). It is not responsible 
-for processing parts of the OOXML document that are available through a 
-relation. Docx2tex has a set of internal \textit{Helper functions} 
-that are responsible for driving the processing of related entities 
-like image conversion, special styling and resolve the properties of 
-numbered list.
+The most important component of docx2tex is the \textit{Core XML Engine
+} that implements the base foundations of conversation from XML files to 
+TeX. The Core Engine is responsible for reading and processing the XML 
+data of the OOXML documents that is served by the OOXML depackaging 
+component. The Core Engine identifies parts of the OOXML document and 
+processes the contents of these parts (paragraphs, runs, tables, image 
+references, numberings, \ldots ). It is not responsible for processing 
+parts of the OOXML document that are available through a relation. 
+Docx2tex has a set of internal \textit{Helper functions} that are 
+responsible for driving the processing of related entities like image 
+conversion, special styling and resolve the properties of numbered list.
 
 When an image reference is found in the XML, ImageMagick is called to 
 produce EPS files from the original image files. The resulting EPS files 
@@ -230,8 +228,8 @@ $\backslash$setcounter}, the \textit{$\backslash$enumi}, and the
 \textit{$\backslash$theenumi} commands. Figure, table and listings 
 captions are recognized and we support referencing them together with 
 heading references also. Image references are resolved and the images 
-(mainly .png and .jpeg) embedded in the OOXML documents are converted 
-to .eps. The width and height properties are queried and the same 
+(mainly .png and .jpeg) embedded in the OOXML documents are converted to 
+.eps. The width and height properties are queried and the same 
 properties are used in the resulting TeX documents. Some special TeX 
 characters are also resolved and escaped in the resulting TeX document. 
 Text found in \textit{Text Boxes} of Word documents are also processed 
@@ -500,8 +498,8 @@ Reference to the figure: \ref{figure:_Ref186544261}.
 \end{verbatim}
 
 
-Referencing tables is the same as for figures and sections, therefore 
-we omit the referencing tables example.
+Referencing tables is the same as for figures and sections, therefore we 
+omit the referencing tables example.
 
 \subsection{Lists and Tables}
 There are two main categories of lists supported by OOXML and Word 2007:
@@ -513,8 +511,8 @@ There are two main categories of lists supported by OOXML and Word 2007:
 \setcounter{numberedCntF}{\theenumi}
 \end{enumerate}
 Both numbered and bulleted lists are allowed to have multiple levels, 
-while numbered lists can be continuous, which means that the list can 
-be intermitted by some other content and then continued.
+while numbered lists can be continuous, which means that the list can be 
+intermitted by some other content and then continued.
 
 The first item of a numbered list looks the following:
 
@@ -565,9 +563,9 @@ list:
 \end{verbatim}
 
 
-When a pervious list continues the $\backslash$se
-tcounter\{enumi\}\{$\backslash$thenumberedCntA\} is inserted by 
-docx2tex after the certain $\backslash$begin\{enumerate\}.
+When a pervious list continues the 
+$\backslash$setcounter\{enumi\}\{$\backslash$thenumberedCntA\} is 
+inserted by docx2tex after the certain $\backslash$begin\{enumerate\}.
 
 We omit showing a bulleted example since it differs only in the TeX 
 output: uses the \textit{itemize} keyword instead of \textit{
@@ -603,8 +601,8 @@ structure or change the appearance of text. When we want to place these
 special characters in fluent text they have to be described in a special 
 way.
 
-Consider the following set of special characters: $<$$>$ as'q \ldots 
-\# $\backslash$ \{ \} \% \~ \_ \^{} \& \$ "\," \\
+Consider the following set of special characters: $<$$>$ as'q \ldots \# 
+$\backslash$ \{ \} \% \~ \_ \^{} \& \$ "\," \\
 These are described in OOXML in the following form:
 
 \begin{verbatim}
@@ -646,10 +644,10 @@ journal. First they split the proposed article to sections and assign
 each section to one of the authors. They start to work independently 
 using Word 2007. After both of the authors finishes they merge the 
 resulting text to one single document. After that step the first author 
-reads though the whole document and makes changes using the Track C
-hanges function of Word. The second author accepts or rejects the 
-changes of the first author and also makes his changes using the Track C
-hanges function of Word. When the authors agree that the quality of the 
+reads though the whole document and makes changes using the Track 
+Changes function of Word. The second author accepts or rejects the 
+changes of the first author and also makes his changes using the Track 
+Changes function of Word. When the authors agree that the quality of the 
 article is acceptable then they convert it to TeX using docx2tex and 
 apply special formatting required by the recommendation of the 
 conference or journal. Now the article can be submitted.
@@ -675,8 +673,7 @@ Readers not familiar with the Track Changes function should consider
 \ref{figure:_Ref196063684}..\begin{figure}[h]
 \centering
 \includegraphics[width=15.17cm,height=12.60cm]{media/image3.eps}
-\caption{\label{figure:_Ref196063684}: Track Changes function of Word
-}
+\caption{\label{figure:_Ref196063684}: Track Changes function of Word}
 \end{figure}
 
 

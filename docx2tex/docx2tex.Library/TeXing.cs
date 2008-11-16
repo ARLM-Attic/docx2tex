@@ -10,13 +10,14 @@ namespace docx2tex.Library
     {
         #region Fields
 
-        private static Dictionary<string, string> _replacerPairs;
+        private Dictionary<string, string> _replacerPairs;
+        private Regex _refRegEx;
 
         #endregion
 
         #region Lifecycle methods
 
-        static TeXing()
+        public TeXing()
         {
             InitReplacesPairs();
         }
@@ -25,8 +26,9 @@ namespace docx2tex.Library
 
         #region Initialization methods
 
-        private static void InitReplacesPairs()
+        private void InitReplacesPairs()
         {
+            _refRegEx = new Regex(" REF (?<Ref>.+?) ", RegexOptions.Compiled);
             _replacerPairs = new Dictionary<string, string>();
 
             foreach (var ent in CodeTable.Instance.NonMathTable)
@@ -49,8 +51,7 @@ namespace docx2tex.Library
         {
             try
             {
-                Regex refRegEx = new Regex(" REF (?<Ref>.+?) ", RegexOptions.Compiled);
-                Match match = refRegEx.Match(reference);
+                Match match = _refRegEx.Match(reference);
                 return match.Groups["Ref"].Value;
             }
             catch

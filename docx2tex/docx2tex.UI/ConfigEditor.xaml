@@ -13,7 +13,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type CheckBox}">
+            <Style.Setters>
+                <Setter Property="Margin" Value="2" />
+            </Style.Setters>
+        </Style>
         <loc:TextBoxStringBindingConverter x:Key="tbSBC" />
+        <loc:NullStringBindingConverter x:Key="nsBC" />
     </UserControl.Resources>
     
     <DockPanel LastChildFill="True">
@@ -30,69 +36,107 @@
             <Button Name="btnCleanPage" DockPanel.Dock="Right" Margin="4" Width="96" Click="btnCleanPage_Click">Clean this Page</Button>
         </DockPanel>
         <TabControl Name="tcConfig">
-            <TabItem Header="Infrastructure &amp; Features" Name="tabInfra">
-                <StackPanel>
-                    <GroupBox Header="Infrastructure">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="95*" />
-                                <ColumnDefinition Width="5*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Grid.Row="0">
-                                <Label>ImageMagick's path:</Label>
-                                <DockPanel LastChildFill="True">
-                                    <Button DockPanel.Dock="Right" Name="btnSelectImgMgck" Click="btnSelectImgMgck_Click">...</Button>
-                                    <TextBox Text="{Binding Path=Infra.ImageMagickPath, Converter={StaticResource tbSBC}}"  Name="txtSelectImgMgck" />
-                                </DockPanel>
+            <TabItem Header="Documents &amp; Features" Name="tabInfra">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*" />
+                        <ColumnDefinition Width="50*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <GroupBox Header="Output Format">
+                            <StackPanel>
+                                <Label>Line length</Label>
+                                <TextBox PreviewTextInput="txtLineLength_PreviewTextInput" TextChanged="txtLineLength_TextChanged">
+                                    <TextBox.Text>
+                                        <Binding Path="Infra.LineLength" />
+                                    </TextBox.Text>
+                                </TextBox>
+                                <Label>Encoding</Label>
+                                <ComboBox 
+                                    ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=AllEncodingsPlusEmpty}"
+                                    SelectedValuePath="InputEncoding"
+                                    SelectedValue="{Binding Path=Infra.InputEnc}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel LastChildFill="True">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Path=InputEncoding}" />
+                                                    <TextBlock Text="{Binding Path=DotNetEncoding}" />
+                                                </StackPanel>
+                                                <DockPanel LastChildFill="False">
+                                                    <TextBlock 
+                                                        DockPanel.Dock="Right"
+                                                        Text="{Binding Path=Description}" VerticalAlignment="Center" />
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
-                        </Grid>
-                    </GroupBox>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*" />
-                            <ColumnDefinition Width="50*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Grid.Row="0">
-                            <GroupBox Header="Figure features">
-                                <StackPanel>
-                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.CenterFigures}">Center figures</CheckBox>
-                                    <Label>Figure placement:</Label>
-                                    <TextBox Text="{Binding Path=LaTeXTags.FigurePlacement, Converter={StaticResource tbSBC}}" />
+                        </GroupBox>
+                        <GroupBox Header="Document properties">
+                            <StackPanel>
+                                <Label>Document class</Label>
+                                <ComboBox 
+                                    ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=AllDocumentClassPlusEmpty}"
+                                    SelectedItem="{Binding Path=Infra.DocumentClass, Converter={StaticResource nsBC}}" />
+                                <Label>Default font size</Label>
+                                <ComboBox 
+                                    ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=AllFontSizePlusEmpty}"
+                                    SelectedItem="{Binding Path=Infra.FontSize, Converter={StaticResource nsBC}}" />
+                                <Label>Paper size</Label>
+                                <ComboBox 
+                                    ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=AllPaperSizePlusEmpty}"
+                                    SelectedItem="{Binding Path=Infra.PaperSize, Converter={StaticResource nsBC}}" />
+                                
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=Infra.Landscape}">Landscape</CheckBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Infrastructure">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="95*" />
+                                    <ColumnDefinition Width="5*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Grid.Row="0">
+                                    <Label>ImageMagick's path:</Label>
+                                    <DockPanel LastChildFill="True">
+                                        <Button DockPanel.Dock="Right" Name="btnSelectImgMgck" Click="btnSelectImgMgck_Click">...</Button>
+                                        <TextBox Text="{Binding Path=Infra.ImageMagickPath, Converter={StaticResource tbSBC}}"  Name="txtSelectImgMgck" />
+                                    </DockPanel>
                                 </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Table features">
-                                <StackPanel>
-                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.CenterTables}">Center tables</CheckBox>
-                                    <Label>Table placement:</Label>
-                                    <TextBox Text="{Binding Path=LaTeXTags.TablePlacement, Converter={StaticResource tbSBC}}" />
-                                </StackPanel>
-                            </GroupBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Grid.Row="0">
-                            <GroupBox Header="References">
-                                <StackPanel>
-                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutFigureReferences}">Process figure cross references</CheckBox>
-                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutTableReferences}">Process table cross references</CheckBox>
-                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutSectionReferences}">Process section cross references</CheckBox>
-                                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutListingReferences}">Process listing cross references</CheckBox>
-                                </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Lists">
-                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.AllowContinuousLists}">Allow continuous numbered lists</CheckBox>
-                            </GroupBox>
-                            <GroupBox>
-                                <StackPanel>
-                                    <Label>Line length</Label>
-                                    <TextBox PreviewTextInput="txtLineLength_PreviewTextInput" TextChanged="txtLineLength_TextChanged">
-                                        <TextBox.Text>
-                                            <Binding Path="Infra.LineLength" />
-                                        </TextBox.Text>
-                                    </TextBox>
-                                </StackPanel>
-                            </GroupBox>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Grid.Row="0">
+                        <GroupBox Header="Figure features">
+                            <StackPanel>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.ProcessFigures}">Process figures</CheckBox>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.CenterFigures}">Center figures</CheckBox>
+                                <Label>Figure placement:</Label>
+                                <TextBox Text="{Binding Path=LaTeXTags.FigurePlacement, Converter={StaticResource tbSBC}}" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Table features">
+                            <StackPanel>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.CenterTables}">Center tables</CheckBox>
+                                <Label>Table placement:</Label>
+                                <TextBox Text="{Binding Path=LaTeXTags.TablePlacement, Converter={StaticResource tbSBC}}" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Lists">
+                            <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.AllowContinuousLists}">Allow continuous numbered lists</CheckBox>
+                        </GroupBox>
+                        <GroupBox Header="References">
+                            <StackPanel>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutFigureReferences}">Process figure cross references</CheckBox>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutTableReferences}">Process table cross references</CheckBox>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutSectionReferences}">Process section cross references</CheckBox>
+                                <CheckBox IsThreeState="True" IsChecked="{Binding Path=LaTeXTags.PutListingReferences}">Process listing cross references</CheckBox>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Latex Tags" Name="tabLtXTags">
                 <Grid>
@@ -287,7 +331,7 @@
                                 <TextBox Name="txtStyleSelectWord2k7Doc" IsReadOnly="True" />
                             </DockPanel>
 
-                            <ListBox Name="lbStyles" Margin="4" />
+                            <ListBox Name="lbStyles" Margin="4"  PreviewMouseLeftButtonDown="lbStyles_MouseDown" />
                         </DockPanel>
                     </GroupBox>
                 </Grid>

@@ -7,6 +7,25 @@ namespace docx2tex.Library
 {
     partial class Engine
     {
+        private Dictionary<string, XmlNode> _bookmarkNodeCache;
+
+        /// <summary>
+        /// Cache the bookmark node to each bookmark name
+        /// </summary>
+        private void CacheBookmarks()
+        {
+            _bookmarkNodeCache = new Dictionary<string, XmlNode>();
+
+            foreach (XmlNode bookmarkNode in GetNodes(_doc, "//w:p/w:bookmarkStart"))
+            {
+                string bookmarkName = GetString(bookmarkNode, "@w:name");
+                if (bookmarkName != null)
+                {
+                    _bookmarkNodeCache.Add(bookmarkName, bookmarkNode);
+                }
+            }
+        }
+
         /// <summary>
         /// Add reference fields
         /// </summary>
@@ -14,19 +33,23 @@ namespace docx2tex.Library
         private void ProcessReference(string currentBookmarkName)
         {
             string bookmarkRefName = _texingFn.ResolveBookmarkRef(currentBookmarkName);
-
-            XmlNode bookmarkRefNode = GetNode(_doc, string.Format("//w:p/w:bookmarkStart[@w:name='{0}']", bookmarkRefName));
-            if (bookmarkRefNode == null)
+            
+            // if no such bookmark found
+            if (!_bookmarkNodeCache.ContainsKey(bookmarkRefName))
+            {
                 return;
+            }
+
+            XmlNode bookmarkRefNode = _bookmarkNodeCache[bookmarkRefName];//GetNode(_doc, string.Format("//w:p/w:bookmarkStart[@w:name='{0}']", bookmarkRefName));
 
             string refStyle = GetLowerString(bookmarkRefNode, "./preceding-sibling::*[1]/w:pStyle/@w:val");
 
             string seq = GetString(bookmarkRefNode.ParentNode, "./w:fldSimple[starts-with(@w:instr, ' SEQ ')]/@w:instr");
 
             // do for sections
-            if (refStyle == _stylingFn.ResolveParaStyle("section") ||
-                refStyle == _stylingFn.ResolveParaStyle("subsection") ||
-                refStyle == _stylingFn.ResolveParaStyle("subsubsection"))
+            if (refStyle == RESOLVED_SECTION ||
+                refStyle == RESOLVED_SUBSECTION ||
+                refStyle == RESOLVED_SUBSUBSECTION)
             {
                 if (Config.Instance.LaTeXTags.PutSectionReferences.Value)
                 {

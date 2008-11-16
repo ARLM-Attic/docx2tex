@@ -13,6 +13,9 @@ namespace docx2tex.Library
         /// <param name="xmlNode"></param>
         private void ProcessDrawing(XmlNode xmlNode, bool inTable)
         {
+            if (!Config.Instance.LaTeXTags.ProcessFigures.Value)
+                return;
+
             XmlNode blipNode = GetNode(xmlNode, @"./wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip");
 
             if (blipNode != null)
@@ -58,6 +61,9 @@ namespace docx2tex.Library
         /// <param name="xmlNode"></param>
         private void ProcessObject(XmlNode xmlNode, bool inTable)
         {
+            if (!Config.Instance.LaTeXTags.ProcessFigures.Value)
+                return;
+
             XmlNode imageData = GetNode(xmlNode, "./v:shape/v:imagedata");
 
             if (imageData != null)
@@ -97,13 +103,13 @@ namespace docx2tex.Library
         }
 
         /// <summary>
-        /// Process textboxes
+        /// Process picture-like objects
+        /// 1. textboxes
         /// </summary>
         /// <param name="xmlNode"></param>
         private void ProcessPict(XmlNode xmlNode)
         {
             // loop through all textbox contents and process them as normal content
-
             // if or if not grouped
             foreach (XmlNode txbxs in GetNodes(xmlNode, ".//v:shape/v:textbox/w:txbxContent"))
             {

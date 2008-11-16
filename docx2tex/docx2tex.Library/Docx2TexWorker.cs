@@ -8,7 +8,7 @@ namespace docx2tex.Library
 {
     public class Docx2TexWorker
     {
-        public void Process(string inputDocxPath, string outputTexPath, IStatusInformation statusInfo)
+        public bool Process(string inputDocxPath, string outputTexPath, IStatusInformation statusInfo)
         {
             string documentPath = Path.GetDirectoryName(outputTexPath);
             if (documentPath == null)
@@ -18,6 +18,7 @@ namespace docx2tex.Library
 
             EnsureMediaPath(documentPath);
 
+            statusInfo.WriteCR("Opening document...");
             Package pkg = null;
             try
             {
@@ -27,7 +28,7 @@ namespace docx2tex.Library
             {
                 // this happens mostly when the user leaves the Word file open
                 statusInfo.WriteLine(ex.Message);
-                return;
+                return false;
             }
 
             ZipPackagePart documentPart = (ZipPackagePart)pkg.GetPart(new Uri("/word/document.xml", UriKind.Relative));
@@ -45,15 +46,30 @@ namespace docx2tex.Library
             using (Stream documentXmlStream = documentPart.GetStream())
             {
                 Engine engine = new Engine(documentXmlStream, numbering, imaging, statusInfo);
+                statusInfo.WriteLine("Document opened.        ");
+
                 string outputString = engine.Process();
                 string latexSource = ReplaceSomeCharacters(outputString);
 
-                using (StreamWriter outputTexStream = new StreamWriter(outputTexPath, false, Encoding.Default))
+                Encoding encoding = Encoding.Default;
+
+                var enc = docx2tex.Library.Data.InputEnc.Instance.CurrentEncoding;
+                if (enc != null)
                 {
-                    outputTexStream.Write(latexSource);
+                    encoding = Encoding.GetEncoding(enc.DotNetEncoding);
+                }
+
+                byte[] data = encoding.GetBytes(latexSource);
+                using (FileStream fs = new FileStream(outputTexPath, FileMode.Create, FileAccess.Write))
+                {
+                    using (BinaryWriter outputTexStream = new BinaryWriter(fs))
+                    {
+                        outputTexStream.Write(data);
+                    }
                 }
             }
             pkg.Close();
+            return true;
         }
 
         private static string ReplaceSomeCharacters(string latexSource)

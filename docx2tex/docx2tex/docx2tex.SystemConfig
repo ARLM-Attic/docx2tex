@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Docx2TexConfig xmlns:xsi="http://kpocza.net/docx2tex" xmlns:xsd="http://kpocza.net/docx2tex">
   <Infra 
-    ImageMagickPath="c:\Program Files\ImageMagick-6.4.2-Q16\convert.exe">
+    ImageMagickPath="c:\Program Files\ImageMagick-6.4.2-Q16\convert.exe"
+    InputEnc="latin2"
+    DocumentClass="article"
+    FontSize="12pt"
+    PaperSize="a4paper">
     <LineLength>72</LineLength>
   </Infra>
   <LaTeXTags 
@@ -55,6 +59,7 @@
         Itemize = "\end{itemize}"
         Table = "\end{table}" />
     </TagPair>
+    <ProcessFigures>true</ProcessFigures>
     <CenterFigures>true</CenterFigures>
     <CenterTables>true</CenterTables>
     <AllowContinuousLists>true</AllowContinuousLists>

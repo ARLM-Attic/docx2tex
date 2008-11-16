@@ -115,6 +115,10 @@ namespace docx2tex.Library
                 originalRuns = simplifiedRuns;
             }
 
+            _statusInfo.WriteLine("Merging text runs...");
+            // merge textrun siblings
+            MergeTextRuns(simplifiedRuns);
+
             _statusInfo.WriteLine("Correcting line lengths...");
             // split the line lengths
             return CompileOutputText(simplifiedRuns);
@@ -316,6 +320,35 @@ namespace docx2tex.Library
         }
 
 	    #endregion
+
+
+        #region Helper : MergeTextRuns
+
+        private void MergeTextRuns(List<Run> simplifiedRuns)
+        {
+            for (int i = 0; i < simplifiedRuns.Count; i++)
+            {
+                if (simplifiedRuns[i] is TextRun)
+                {
+                    string finalText = (simplifiedRuns[i] as TextRun).Text;
+                    bool found = false;
+                    int j = i + 1;
+                    while (j < simplifiedRuns.Count && simplifiedRuns[j] is TextRun)
+                    {
+                        finalText += (simplifiedRuns[j] as TextRun).Text;
+                        simplifiedRuns[j] = new NullRun();
+                        found = true;
+                        j++;
+                    }
+                    if (found)
+                    {
+                        simplifiedRuns[i] = new TextRun(finalText);
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         #region Helper : CompileOutputText
 

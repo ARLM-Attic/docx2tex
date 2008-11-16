@@ -29,9 +29,9 @@ namespace docx2tex.Library
             _doc = new XmlDocument();
             _doc.Load(documentXmlStream);
             _texingFn = new TeXing();
-            var stylingFn = new Styling();
+            _stylingFn = new Styling();
             var tagingFn = new Taging();
-            _tex = new Store(stylingFn, tagingFn, statusInfo);
+            _tex = new Store(_stylingFn, tagingFn, statusInfo);
 
             _nsmgr = new XmlNamespaceManager(_doc.NameTable);
             _nsmgr.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
@@ -43,10 +43,11 @@ namespace docx2tex.Library
             _nsmgr.AddNamespace("v", "urn:schemas-microsoft-com:vml");
         
             _numberingFn = numberingFn;
-            _stylingFn = stylingFn;
             _imagingFn = imagingFn;
 
             InitMathTables();
+            CacheResolvedStyles();
+            CacheBookmarks();
         }
 
         /// <summary>
@@ -96,12 +97,38 @@ namespace docx2tex.Library
         /// </summary>
         private void Header()
         {
-            _tex.AddTextNL(@"\documentclass[12pt, a4paper]{article}");
-            _tex.AddTextNL(@"\usepackage[latin2]{inputenc}");
+            // the specified document class or article if not specified
+            string docClass = Config.Instance.Infra.DocumentClass ?? "article";
+
+            // properties
+            var propsList = new List<string>();
+            if (!string.IsNullOrEmpty(Config.Instance.Infra.FontSize))
+            {
+                propsList.Add(Config.Instance.Infra.FontSize);
+            }
+            if (!string.IsNullOrEmpty(Config.Instance.Infra.PaperSize))
+            {
+                propsList.Add(Config.Instance.Infra.PaperSize);
+            }
+            if (Config.Instance.Infra.Landscape == true)
+            {
+                propsList.Add("landscape");
+            }
+            propsList.RemoveAll(p => string.IsNullOrEmpty(p));
+
+            var props = string.Join(",", propsList.ToArray());
+
+            _tex.AddTextNL(@"\documentclass[" + props + "]{" + docClass + "}");
+
+            var enc = docx2tex.Library.Data.InputEnc.Instance.CurrentEncoding;
+            if (enc != null)
+            {
+                _tex.AddTextNL(@"\usepackage[" + enc.InputEncoding + "]{inputenc}");
+            }
             _tex.AddTextNL(@"\usepackage{graphicx}");
             _tex.AddTextNL(@"\usepackage{ulem}");
             _tex.AddTextNL(@"\usepackage{amsmath}");
-
+            
             _tex.AddTextNL(@"\begin{document}");
         }
 

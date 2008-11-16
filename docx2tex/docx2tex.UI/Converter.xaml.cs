@@ -60,11 +60,15 @@ namespace docx2tex.UI
 
         #endregion
 
+        #region Parameterization
+        
         internal void SetParameters(string docxPath, string texPath)
         {
             txtSelectWord2k7Doc.Text = docxPath;
             txtSelectLaTeXDoc.Text = texPath;
         }
+
+        #endregion
 
         #region Private operation methods
         
@@ -123,17 +127,18 @@ namespace docx2tex.UI
                 statusInfo.WriteLine("Destination: " + texPath);
                 statusInfo.WriteLine(string.Empty);
 
-                docx2TexWorker.Process(docxPath, texPath, statusInfo);
-
-                recentConversions.RemoveAll(rce => rce.From == docxPath && rce.To == texPath);
-                recentConversions.Insert(0, new FromToElement
+                if (docx2TexWorker.Process(docxPath, texPath, statusInfo))
                 {
-                    Order = 0,
-                    From = docxPath,
-                    To = texPath
-                });
-                UserConfigHandler.UpdateRecentConversion(recentConversions);
-                _contentClosable.BuildRecentConversionMenus();
+                    recentConversions.RemoveAll(rce => rce.From == docxPath && rce.To == texPath);
+                    recentConversions.Insert(0, new FromToElement
+                    {
+                        Order = 0,
+                        From = docxPath,
+                        To = texPath
+                    });
+                    UserConfigHandler.UpdateRecentConversion(recentConversions);
+                    _contentClosable.BuildRecentConversionMenus();
+                }
             }
             catch (Exception ex)
             {

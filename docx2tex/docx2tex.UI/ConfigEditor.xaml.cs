@@ -22,11 +22,64 @@ namespace docx2tex.UI
     public partial class ConfigEditor : UserControl
     {
         #region Fields
-        
-        Docx2TexConfig _conf;
-        ConfigurationClassEnum _configurationClass;
-        string _documentFilePath;
-        IContentClosable _contentClosable;
+
+        private Docx2TexConfig _conf;
+        private ConfigurationClassEnum _configurationClass;
+        private string _documentFilePath;
+        private IContentClosable _contentClosable;
+
+        private List<InputEncInfo> AllEncodings
+        {
+            get { return InputEnc.Instance.InputEncs; }
+        }
+
+        public IEnumerable<InputEncInfo> AllEncodingsPlusEmpty
+        {
+            get 
+            {
+                yield return new InputEncInfo(null, null, "Not defined");
+                foreach (var enc in AllEncodings)
+                {
+                    yield return enc;
+                }
+            }
+        }
+
+        public IEnumerable<string> AllDocumentClassPlusEmpty
+        {
+            get
+            {
+                yield return string.Empty;
+                yield return "article";
+                yield return "book";
+                yield return "report";
+            }
+        }
+
+        public IEnumerable<string> AllFontSizePlusEmpty
+        {
+            get
+            {
+                yield return string.Empty;
+                yield return "10pt";
+                yield return "11pt";
+                yield return "12pt";
+            }
+        }
+
+        public IEnumerable<string> AllPaperSizePlusEmpty
+        {
+            get
+            {
+                yield return string.Empty;
+                yield return "letterpaper";
+                yield return "legalpaper";
+                yield return "executivepaper";
+                yield return "a4paper";
+                yield return "a5paper";
+                yield return "b5paper";
+            }
+        }
 
         #endregion
 
@@ -283,6 +336,48 @@ namespace docx2tex.UI
             var styles = StyleEnumerator.Enumerate(txtStyleSelectWord2k7Doc.Text);
             lbStyles.Items.Clear();
             styles.ForEach(s => lbStyles.Items.Add(s));
+        }
+
+	    #endregion    
+
+        #region Styles D&D
+
+		private void lbStyles_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBox lb = e.Source as ListBox;
+
+            string data = GetObjectDataFromPoint(lb, e.GetPosition(lb));
+
+            if (data != null)
+            {
+                DragDrop.DoDragDrop(lb, data, DragDropEffects.Copy);
+            }
+        }
+
+        private string GetObjectDataFromPoint(ListBox lb, Point point)
+        {
+            UIElement element = lb.InputHitTest(point) as UIElement;
+            if (element != null)
+            {
+                object data = DependencyProperty.UnsetValue;
+                while (data == DependencyProperty.UnsetValue)
+                {
+                    data = lb.ItemContainerGenerator.ItemFromContainer(element);
+
+                    if (data == DependencyProperty.UnsetValue)
+                    {
+                        element = VisualTreeHelper.GetParent(element) as UIElement;
+                    }
+
+                    if (element == lb)
+                        return null;
+                }
+                if (data != DependencyProperty.UnsetValue)
+                {
+                    return data as string;
+                }
+            }
+            return null;
         }
 
 	    #endregion    

@@ -112,9 +112,9 @@ namespace docx2tex.Library
         }
 
         /// <summary>
-        /// Singleton instance
+        /// Singleton instance (not readonly because it has to be overwritten some times)
         /// </summary>
-        public static Config Instance = new Config();
+        internal static Config Instance = new Config();
 
         /// <summary>
         /// running infrastructure

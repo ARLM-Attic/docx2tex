@@ -54,11 +54,46 @@ namespace docx2tex.Library.Data
         public string ImageMagickPath { get; set; }
 
         /// <summary>
+        /// Input encoding
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string InputEnc { get; set; }
+
+        /// <summary>
         /// Line length
         /// </summary>
         [XmlElement(IsNullable = true)]
         [Docx2TexAutoConfig]
         public int? LineLength { get; set; }
+
+        /// <summary>
+        /// Document class type
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string DocumentClass { get; set; }
+
+        /// <summary>
+        /// default font size
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string FontSize { get; set; }
+
+        /// <summary>
+        /// paper size
+        /// </summary>
+        [XmlAttribute]
+        [Docx2TexAutoConfig]
+        public string PaperSize { get; set; }
+
+        /// <summary>
+        /// is landscape
+        /// </summary>
+        [XmlElement(IsNullable = true)]
+        [Docx2TexAutoConfig]
+        public bool? Landscape { get; set; }
     }
 
     /// <summary>
@@ -116,6 +151,12 @@ namespace docx2tex.Library.Data
         /// Tags
         /// </summary>
         public TagPair TagPair { get; set; }
+
+        /// <summary>
+        /// Process figures
+        /// </summary>
+        [Docx2TexAutoConfig]
+        public bool? ProcessFigures { get; set; }
 
         /// <summary>
         /// Center figures

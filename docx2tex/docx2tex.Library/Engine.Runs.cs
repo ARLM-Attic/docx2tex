@@ -62,7 +62,6 @@ namespace docx2tex.Library
         private RunInfo ProcessSingleRun(bool inVerbatim, RunInfo prevRunInfo, XmlNode run, bool inTable)
         {
             var currentRunInfo = new RunInfo(prevRunInfo);
-
             // if it is not verbatim then process breaks and styles
             if (!inVerbatim)
             {
@@ -104,7 +103,7 @@ namespace docx2tex.Library
                 currentRunInfo.CFC = tmpFld;
             }
 
-            // query the name of the bookmark
+            //// query the name of the bookmark
             string currentBookmarkName = GetString(run, "./w:instrText");
 
             // if set
@@ -134,8 +133,10 @@ namespace docx2tex.Library
             {
                 ProcessReference(currentBookmarkName);
             }
+
             // else standard text or object
-            else if (
+            else
+            if (
                 // no CFC at all
                 (currentRunInfo.CFC == null)
                 // if we are after a separate cfc an not reference field was here then we are interested in the text

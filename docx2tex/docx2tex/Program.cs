@@ -33,11 +33,12 @@ namespace docx2tex
 
             StaticConfigHelper.DocxPath = inputDocxPath;
 
-            new Docx2TexWorker().Process(inputDocxPath, outputTexPath, consoleOutput);
-
-            using (StreamReader sr = new StreamReader(outputTexPath))
+            if (new Docx2TexWorker().Process(inputDocxPath, outputTexPath, consoleOutput))
             {
-                Console.WriteLine(sr.ReadToEnd());
+                using (StreamReader sr = new StreamReader(outputTexPath))
+                {
+                    Console.WriteLine(sr.ReadToEnd());
+                }
             }
         }
 
